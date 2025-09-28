@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   FlatList,
   StyleSheet,
   Platform,
   StatusBar,
+  Animated,
 } from 'react-native';
 import {
   Text,
@@ -41,11 +42,33 @@ const vocabularyData = [
 ];
 
 const categories = ['все', 'места', 'еда', 'профессии', 'прилагательные', 'основные', 'деньги', 'наука', 'предметы'];
+const HEADER_HEIGHT = 240; // Высота заголовка
 
 export default function VocabularyScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('все');
   const theme = useTheme();
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  // Анимация для заголовка
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT * 0.5, HEADER_HEIGHT],
+    outputRange: [1, 0.5, 0],
+    extrapolate: 'clamp',
+  });
+
+  // Анимация для контента - убираем отступ сверху при скролле
+  const contentPaddingTop = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [HEADER_HEIGHT + 20, 20],
+    extrapolate: 'clamp',
+  });
 
   const getCategoryColor = (category) => {
     const colors = {
@@ -116,11 +139,20 @@ export default function VocabularyScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['#4338CA', '#6366F1', '#8B5CF6']}
-        style={styles.headerGradient}
-      >
-        <Surface style={styles.headerSurface} elevation={0}>
+              <Animated.View
+          style={[
+            styles.headerContainer,
+            {
+              transform: [{ translateY: headerTranslateY }],
+              opacity: headerOpacity,
+            },
+          ]}
+        >
+          <LinearGradient
+            colors={['#4338CA', '#6366F1', '#8B5CF6']}
+            style={styles.headerGradient}
+          >
+            <Surface style={styles.headerSurface} elevation={0}>
           <Text variant="displaySmall" style={styles.headerArabic}>
             مفردات
           </Text>
@@ -129,11 +161,12 @@ export default function VocabularyScreen() {
           </Text>
           <Text variant="titleMedium" style={styles.headerSubtitle}>
             Изучайте арабские слова с транскрипцией
-          </Text>
-        </Surface>
-      </LinearGradient>
+                      </Text>
+          </Surface>
+          </LinearGradient>
+        </Animated.View>
 
-      <View style={styles.contentContainer}>
+      <Animated.View style={[styles.contentContainer, { paddingTop: contentPaddingTop }]}>
         <Surface style={styles.searchContainer} elevation={2}>
           <Searchbar
             placeholder="Поиск слов..."
@@ -162,8 +195,12 @@ export default function VocabularyScreen() {
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={Platform.OS !== 'web'}
           style={styles.wordsList}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false }
+          )}
         />
-      </View>
+      </Animated.View>
     </View>
   );
 }
@@ -174,7 +211,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
     paddingBottom: Platform.OS === 'web' ? 0 : 70, // Отступ для навигационной панели
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: HEADER_HEIGHT,
+    zIndex: 1000,
+  },
   headerGradient: {
+    flex: 1,
     paddingBottom: 32,
     paddingTop: Platform.OS === 'web' ? 0 : (StatusBar.currentHeight || 0) + 20,
     borderBottomLeftRadius: 32,
@@ -213,6 +259,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: 20,
+    paddingTop: 0, // Теперь управляется анимацией
   },
   searchContainer: {
     backgroundColor: '#FFFFFF',

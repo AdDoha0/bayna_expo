@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -6,6 +6,7 @@ import {
   Platform,
   StatusBar,
   Dimensions,
+  Animated,
 } from 'react-native';
 import {
   Text,
@@ -18,9 +19,31 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
+const HEADER_HEIGHT = 240; // Высота заголовка
 
 export default function ProgressScreen() {
   const theme = useTheme();
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  // Анимация для заголовка
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT * 0.5, HEADER_HEIGHT],
+    outputRange: [1, 0.5, 0],
+    extrapolate: 'clamp',
+  });
+
+  // Анимация для контента - убираем отступ сверху при скролле
+  const contentPaddingTop = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [HEADER_HEIGHT + 20, 20],
+    extrapolate: 'clamp',
+  });
 
   const progressData = {
     totalLessons: 6,
@@ -141,11 +164,20 @@ export default function ProgressScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['#4338CA', '#6366F1', '#8B5CF6']}
-        style={styles.headerGradient}
-      >
-        <Surface style={styles.headerSurface} elevation={0}>
+              <Animated.View
+          style={[
+            styles.headerContainer,
+            {
+              transform: [{ translateY: headerTranslateY }],
+              opacity: headerOpacity,
+            },
+          ]}
+        >
+          <LinearGradient
+            colors={['#4338CA', '#6366F1', '#8B5CF6']}
+            style={styles.headerGradient}
+          >
+            <Surface style={styles.headerSurface} elevation={0}>
           <Text variant="displaySmall" style={styles.headerArabic}>
             التقدم
           </Text>
@@ -154,14 +186,16 @@ export default function ProgressScreen() {
           </Text>
           <Text variant="titleMedium" style={styles.headerSubtitle}>
             Отслеживайте свои достижения в изучении арабского языка
-          </Text>
-        </Surface>
-      </LinearGradient>
+                      </Text>
+          </Surface>
+          </LinearGradient>
+        </Animated.View>
 
       <ScrollView
         style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, { paddingTop: contentPaddingTop }]}
         showsVerticalScrollIndicator={Platform.OS !== 'web'}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
       >
         {/* Основная статистика */}
         <View style={styles.statsGrid}>
@@ -257,7 +291,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
     paddingBottom: Platform.OS === 'web' ? 0 : 70, // Отступ для навигационной панели
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: HEADER_HEIGHT,
+    zIndex: 1000,
+  },
   headerGradient: {
+    flex: 1,
     paddingBottom: 32,
     paddingTop: Platform.OS === 'web' ? 0 : (StatusBar.currentHeight || 0) + 20,
     borderBottomLeftRadius: 32,
@@ -298,6 +341,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
+    paddingTop: 0, // Теперь управляется анимацией
     paddingBottom: 40,
   },
   statsGrid: {

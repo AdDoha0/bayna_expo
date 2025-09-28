@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   FlatList,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   StatusBar,
   Platform,
+  Animated,
 } from 'react-native';
 import {
   Card,
@@ -20,9 +21,31 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { dialogsData } from '../data/dialogsData';
 
 const { width, height } = Dimensions.get('window');
+const HEADER_HEIGHT = 280; // Высота заголовка
 
 export default function DialogsListScreen({ navigation }) {
   const theme = useTheme();
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  // Анимация для заголовка
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT * 0.5, HEADER_HEIGHT],
+    outputRange: [1, 0.5, 0],
+    extrapolate: 'clamp',
+  });
+
+  // Анимация для контента - убираем отступ сверху при скролле
+  const contentPaddingTop = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [HEADER_HEIGHT, 0],
+    extrapolate: 'clamp',
+  });
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -104,12 +127,21 @@ export default function DialogsListScreen({ navigation }) {
   );
 
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#4338CA', '#6366F1', '#8B5CF6']}
-        style={styles.headerGradient}
-      >
-        <Surface style={styles.headerSurface} elevation={0}>
+          <View style={styles.container}>
+        <Animated.View
+          style={[
+            styles.headerContainer,
+            {
+              transform: [{ translateY: headerTranslateY }],
+              opacity: headerOpacity,
+            },
+          ]}
+        >
+          <LinearGradient
+            colors={['#4338CA', '#6366F1', '#8B5CF6']}
+            style={styles.headerGradient}
+          >
+            <Surface style={styles.headerSurface} elevation={0}>
           <Text variant="displayMedium" style={styles.headerArabic}>
             بين يديك
           </Text>
@@ -123,20 +155,29 @@ export default function DialogsListScreen({ navigation }) {
             <View style={styles.decorativeDot} />
             <View style={styles.decorativeLine} />
             <View style={styles.decorativeDot} />
-          </View>
-        </Surface>
-      </LinearGradient>
+                      </View>
+          </Surface>
+          </LinearGradient>
+        </Animated.View>
 
-      <FlatList
-        data={dialogsData}
-        renderItem={renderDialogItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={[styles.listContainer, Platform.OS === 'web' && styles.webListContainer]}
-        showsVerticalScrollIndicator={Platform.OS !== 'web'}
-        bounces={Platform.OS !== 'web'}
-        scrollEventThrottle={16}
-        style={[styles.flatList, Platform.OS === 'web' && styles.webFlatList]}
-        nestedScrollEnabled={true}
+              <Animated.FlatList
+          data={dialogsData}
+          renderItem={renderDialogItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={[
+            styles.listContainer, 
+            Platform.OS === 'web' && styles.webListContainer,
+            { paddingTop: contentPaddingTop }
+          ]}
+          showsVerticalScrollIndicator={Platform.OS !== 'web'}
+          bounces={Platform.OS !== 'web'}
+          scrollEventThrottle={16}
+          style={[styles.flatList, Platform.OS === 'web' && styles.webFlatList]}
+          nestedScrollEnabled={true}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false },
+          )}
         {...(Platform.OS === 'web' && {
           overScrollMode: 'auto',
           scrollEnabled: true,
@@ -158,14 +199,19 @@ const styles = StyleSheet.create({
       overflow: 'hidden',
     }),
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: HEADER_HEIGHT,
+    zIndex: 1000,
+  },
   headerGradient: {
+    flex: 1,
     paddingBottom: 32,
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
-    ...(Platform.OS === 'web' && {
-      position: 'relative',
-      zIndex: 1,
-    }),
   },
   headerSurface: {
     backgroundColor: 'transparent',
