@@ -1,0 +1,239 @@
+import React, { useState } from 'react';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import {
+  Text,
+  Surface,
+  useTheme,
+  Button,
+} from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
+
+import { dialogsData } from '../data/dialogsData';
+import ArabicTextCard from '../components/ArabicTextCard';
+
+const { width, height } = Dimensions.get('window');
+
+export default function DialogDetailScreen({ route }) {
+  const { dialogId } = route.params;
+  const dialog = dialogsData.find(d => d.id === dialogId);
+  const [showTranscription, setShowTranscription] = useState(false);
+  const theme = useTheme();
+
+  if (!dialog) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text variant="headlineSmall" style={{ color: theme.colors.error }}>
+          Диалог не найден
+        </Text>
+      </View>
+    );
+  }
+
+  const renderDialogueItem = (item, index) => (
+    <ArabicTextCard
+      key={`${item.id}-${index}`}
+      arabic={item.arabic}
+      transcription={item.transcription}
+      russian={item.russian}
+      speaker={item.speaker}
+      showTranscription={showTranscription}
+      style={{ 
+        marginHorizontal: 4,
+      }}
+    />
+  );
+
+  return (
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#4338CA', '#6366F1', '#8B5CF6']}
+        style={styles.headerGradient}
+      >
+        <Surface style={styles.headerSurface} elevation={0}>
+          <Text variant="headlineMedium" style={styles.headerTitle}>
+            {dialog.subtitle}
+          </Text>
+          <Text variant="titleSmall" style={styles.headerSubtitle}>
+            {dialog.dialogues.length} реплик в диалоге
+          </Text>
+          
+          <Surface style={styles.controlsContainer} elevation={3}>
+            <Button
+              mode="contained"
+              icon={showTranscription ? "eye-off" : "eye"}
+              onPress={() => setShowTranscription(!showTranscription)}
+              style={styles.transcriptionButton}
+              buttonColor="rgba(255,255,255,0.9)"
+              textColor="#4338CA"
+              compact={false}
+            >
+              {showTranscription ? 'Скрыть' : 'Показать'} транскрипцию
+            </Button>
+          </Surface>
+        </Surface>
+      </LinearGradient>
+
+      <ScrollView
+        style={[styles.scrollContainer, Platform.OS === 'web' && styles.webScrollContainer]}
+        contentContainerStyle={[styles.scrollContent, Platform.OS === 'web' && styles.webScrollContent]}
+        showsVerticalScrollIndicator={Platform.OS !== 'web'}
+        bounces={Platform.OS !== 'web'}
+        scrollEventThrottle={16}
+        nestedScrollEnabled={true}
+        {...(Platform.OS === 'web' && {
+          overScrollMode: 'auto',
+          scrollEnabled: true,
+          alwaysBounceVertical: false,
+        })}
+      >
+        <View style={[styles.dialogsContainer, Platform.OS === 'web' && styles.webDialogsContainer]}>
+          {dialog.dialogues.map((item, index) => renderDialogueItem(item, index))}
+        </View>
+        
+        <Surface style={styles.footer} elevation={0}>
+          <LinearGradient
+            colors={['#EEF2FF', '#F8FAFC']}
+            style={styles.footerGradient}
+          >
+            <View style={styles.footerContent}>
+              <Text variant="titleMedium" style={styles.footerText}>
+                🎉 Диалог завершён!
+              </Text>
+              <Text variant="bodyMedium" style={styles.footerSubtext}>
+                Вы изучили {dialog.dialogues.length} реплик
+              </Text>
+              <Surface style={styles.successBadge} elevation={2}>
+                <Text variant="labelLarge" style={styles.successText}>
+                  ✅ Отлично!
+                </Text>
+              </Surface>
+            </View>
+          </LinearGradient>
+        </Surface>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+    paddingBottom: Platform.OS === 'web' ? 0 : 70, // Отступ для навигационной панели
+    ...(Platform.OS === 'web' && {
+      height: '100vh',
+      overflow: 'hidden',
+    }),
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+  },
+  headerGradient: {
+    paddingBottom: 28,
+    paddingTop: Platform.OS === 'web' ? 0 : (StatusBar.currentHeight || 0),
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    ...(Platform.OS === 'web' && {
+      position: 'relative',
+      zIndex: 1,
+    }),
+  },
+  headerSurface: {
+    backgroundColor: 'transparent',
+    padding: 24,
+    paddingTop: 16,
+  },
+  headerTitle: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: '700',
+    marginBottom: 8,
+    textShadowColor: 'rgba(0,0,0,0.2)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
+  headerSubtitle: {
+    color: '#E0E7FF',
+    textAlign: 'center',
+    opacity: 0.9,
+    marginBottom: 20,
+  },
+  controlsContainer: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
+    padding: 4,
+    alignSelf: 'center',
+  },
+  transcriptionButton: {
+    borderRadius: 16,
+    minWidth: 200,
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  webScrollContainer: {
+    height: '100%',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingTop: 24,
+    paddingBottom: 40,
+  },
+  webScrollContent: {
+    minHeight: '100%',
+    paddingBottom: 80,
+  },
+  dialogsContainer: {
+    paddingHorizontal: 20,
+  },
+  webDialogsContainer: {
+    minHeight: 'auto',
+  },
+  footer: {
+    marginTop: 32,
+    marginHorizontal: 20,
+    borderRadius: 24,
+    overflow: 'hidden',
+  },
+  footerGradient: {
+    paddingVertical: 32,
+    paddingHorizontal: 24,
+  },
+  footerContent: {
+    alignItems: 'center',
+  },
+  footerText: {
+    fontWeight: '700',
+    marginBottom: 8,
+    color: '#4338CA',
+    textAlign: 'center',
+  },
+  footerSubtext: {
+    opacity: 0.8,
+    marginBottom: 16,
+    color: '#6366F1',
+    textAlign: 'center',
+  },
+  successBadge: {
+    backgroundColor: '#10B981',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  successText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+  },
+}); 
