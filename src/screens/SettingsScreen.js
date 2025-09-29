@@ -120,9 +120,9 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {headerComponent}
 
-      <ScrollView
+      <Animated.ScrollView
         style={styles.scrollContainer}
-        contentContainerStyle={[styles.scrollContent, { paddingTop: contentPaddingTop }]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={Platform.OS !== 'web'}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -130,6 +130,7 @@ export default function SettingsScreen() {
         )}
         scrollEventThrottle={16}
       >
+        <Animated.View style={{ paddingTop: contentPaddingTop }}>
         {/* Основные настройки */}
         <Card style={styles.settingsCard} mode="elevated" elevation={3}>
           <Card.Content style={styles.cardContent}>
@@ -296,7 +297,8 @@ export default function SettingsScreen() {
             Изучение арабского языка стало проще
           </Text>
         </View>
-      </ScrollView>
+        </Animated.View>
+      </Animated.ScrollView>
     </View>
   );
 }

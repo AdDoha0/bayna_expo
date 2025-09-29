@@ -127,41 +127,40 @@ export default function VocabularyScreen() {
     <View style={styles.container}>
       {headerComponent}
 
-      <Animated.View style={[styles.contentContainer, { paddingTop: contentPaddingTop }]}>
-        <Surface style={styles.searchContainer} elevation={2}>
-          <Searchbar
-            placeholder="Поиск слов..."
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={styles.searchBar}
-            iconColor={theme.colors.primary}
-          />
-        </Surface>
+      <Animated.ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={Platform.OS !== 'web'}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+      >
+        <Animated.View style={[styles.contentWrapper, { paddingTop: contentPaddingTop }]}>
+          <Surface style={styles.searchContainer} elevation={2}>
+            <Searchbar
+              placeholder="Поиск слов..."
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              style={styles.searchBar}
+              iconColor={theme.colors.primary}
+            />
+          </Surface>
 
-        <Surface style={styles.filtersContainer} elevation={1}>
-          <FlatList
-            data={categories}
-            renderItem={({ item }) => renderCategoryChip(item)}
-            keyExtractor={(item) => item}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filtersContent}
-          />
-        </Surface>
+          <Surface style={styles.filtersContainer} elevation={1}>
+            <FlatList
+              data={categories}
+              renderItem={({ item }) => renderCategoryChip(item)}
+              keyExtractor={(item) => item}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.filtersContent}
+            />
+          </Surface>
 
-        <FlatList
-          data={filteredVocabulary}
-          renderItem={renderWordItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-          showsVerticalScrollIndicator={Platform.OS !== 'web'}
-          style={styles.wordsList}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: false }
-          )}
-        />
-      </Animated.View>
+          {filteredVocabulary.map((item) => renderWordItem({ item }))}
+        </Animated.View>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -172,10 +171,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
     paddingBottom: Platform.OS === 'web' ? 0 : 70, // Отступ для навигационной панели
   },
-  contentContainer: {
+  scrollView: {
     flex: 1,
-    padding: 20,
-    paddingTop: 0, // Теперь управляется анимацией
+  },
+  contentWrapper: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   searchContainer: {
     backgroundColor: '#FFFFFF',
@@ -199,12 +200,6 @@ const styles = StyleSheet.create({
   },
   filterChip: {
     marginRight: 8,
-  },
-  wordsList: {
-    flex: 1,
-  },
-  listContainer: {
-    paddingBottom: 20,
   },
   wordCard: {
     marginBottom: 16,

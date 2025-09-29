@@ -120,28 +120,30 @@ export default function DialogsListScreen({ navigation }) {
     </Card>
   );
 
+  const ListHeader = () => <Animated.View style={{ paddingTop: contentPaddingTop }} />;
+
   return (
     <View style={styles.container}>
       {headerComponent}
 
-              <Animated.FlatList
-          data={dialogsData}
-          renderItem={renderDialogItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={[
-            styles.listContainer, 
-            Platform.OS === 'web' && styles.webListContainer,
-            { paddingTop: contentPaddingTop }
-          ]}
-          showsVerticalScrollIndicator={Platform.OS !== 'web'}
-          bounces={Platform.OS !== 'web'}
-          scrollEventThrottle={16}
-          style={[styles.flatList, Platform.OS === 'web' && styles.webFlatList]}
-          nestedScrollEnabled={true}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: false },
-          )}
+      <Animated.FlatList
+        data={dialogsData}
+        renderItem={renderDialogItem}
+        keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={ListHeader}
+        contentContainerStyle={[
+          styles.listContainer, 
+          Platform.OS === 'web' && styles.webListContainer,
+        ]}
+        showsVerticalScrollIndicator={Platform.OS !== 'web'}
+        bounces={Platform.OS !== 'web'}
+        scrollEventThrottle={16}
+        style={[styles.flatList, Platform.OS === 'web' && styles.webFlatList]}
+        nestedScrollEnabled={true}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false },
+        )}
         {...(Platform.OS === 'web' && {
           overScrollMode: 'auto',
           scrollEnabled: true,

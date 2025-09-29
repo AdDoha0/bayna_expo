@@ -153,12 +153,14 @@ export default function ProgressScreen() {
     <View style={styles.container}>
       {headerComponent}
 
-      <ScrollView
+      <Animated.ScrollView
         style={styles.scrollContainer}
-        contentContainerStyle={[styles.scrollContent, { paddingTop: contentPaddingTop }]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={Platform.OS !== 'web'}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+        scrollEventThrottle={16}
       >
+        <Animated.View style={{ paddingTop: contentPaddingTop }}>
         {/* Основная статистика */}
         <View style={styles.statsGrid}>
           {renderStatCard(
@@ -242,7 +244,8 @@ export default function ProgressScreen() {
             </View>
           </Card.Content>
         </Card>
-      </ScrollView>
+        </Animated.View>
+      </Animated.ScrollView>
     </View>
   );
 }

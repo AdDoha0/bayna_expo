@@ -11,7 +11,13 @@ import {
 } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const HEADER_HEIGHT = 240;
+// Базовая высота контента хедера
+const BASE_HEADER_HEIGHT = 240;
+// Полная высота хедера с учетом StatusBar и platform
+const getFullHeaderHeight = () => {
+  const statusBarHeight = Platform.OS === 'web' ? 0 : (StatusBar.currentHeight || 0);
+  return BASE_HEADER_HEIGHT + statusBarHeight;
+};
 
 export default function AnimatedHeader({
   scrollY,
@@ -20,23 +26,26 @@ export default function AnimatedHeader({
   subtitle,
   decorativeElement = null,
 }) {
+  const fullHeaderHeight = getFullHeaderHeight();
+  
   // Анимация для заголовка
   const headerTranslateY = scrollY.interpolate({
-    inputRange: [0, HEADER_HEIGHT],
-    outputRange: [0, -HEADER_HEIGHT],
+    inputRange: [0, fullHeaderHeight],
+    outputRange: [0, -fullHeaderHeight],
     extrapolate: 'clamp',
   });
 
   const headerOpacity = scrollY.interpolate({
-    inputRange: [0, HEADER_HEIGHT * 0.5, HEADER_HEIGHT],
+    inputRange: [0, fullHeaderHeight * 0.5, fullHeaderHeight],
     outputRange: [1, 0.5, 0],
     extrapolate: 'clamp',
   });
 
   // Анимация для контента - убираем отступ сверху при скролле
+  // Используем полную высоту хедера с учетом StatusBar
   const contentPaddingTop = scrollY.interpolate({
-    inputRange: [0, HEADER_HEIGHT],
-    outputRange: [HEADER_HEIGHT + 20, 20],
+    inputRange: [0, fullHeaderHeight],
+    outputRange: [fullHeaderHeight + 20, 20],
     extrapolate: 'clamp',
   });
 
@@ -46,6 +55,7 @@ export default function AnimatedHeader({
         style={[
           styles.headerContainer,
           {
+            height: fullHeaderHeight,
             transform: [{ translateY: headerTranslateY }],
             opacity: headerOpacity,
           },
@@ -71,7 +81,7 @@ export default function AnimatedHeader({
       </Animated.View>
     ),
     contentPaddingTop,
-    HEADER_HEIGHT,
+    HEADER_HEIGHT: fullHeaderHeight,
   };
 }
 
@@ -81,7 +91,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: HEADER_HEIGHT,
     zIndex: 1000,
   },
   headerGradient: {
