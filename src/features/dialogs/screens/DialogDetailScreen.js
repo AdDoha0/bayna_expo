@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   StatusBar,
-  Dimensions,
   Platform,
 } from 'react-native';
 import {
@@ -14,13 +13,11 @@ import {
   Button,
 } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Screen } from '../../../shared/components';
+import { ArabicTextCard } from '../components';
+import { dialogsData } from '../data';
 
-import { dialogsData } from '../data/dialogsData';
-import ArabicTextCard from '../components/ArabicTextCard';
-
-const { width, height } = Dimensions.get('window');
-
-export default function DialogDetailScreen({ route }) {
+export function DialogDetailScreen({ route }) {
   const { dialogId } = route.params;
   const dialog = dialogsData.find(d => d.id === dialogId);
   const [showTranscription, setShowTranscription] = useState(false);
@@ -28,30 +25,34 @@ export default function DialogDetailScreen({ route }) {
 
   if (!dialog) {
     return (
-      <View style={styles.errorContainer}>
-        <Text variant="headlineSmall" style={{ color: theme.colors.error }}>
-          Диалог не найден
-        </Text>
-      </View>
+      <Screen>
+        <View style={styles.errorContainer}>
+          <Text variant="headlineSmall" style={{ color: theme.colors.error }}>
+            Диалог не найден
+          </Text>
+        </View>
+      </Screen>
     );
   }
 
-  const renderDialogueItem = (item, index) => (
-    <ArabicTextCard
-      key={`${item.id}-${index}`}
-      arabic={item.arabic}
-      transcription={item.transcription}
-      russian={item.russian}
-      speaker={item.speaker}
-      showTranscription={showTranscription}
-      style={{ 
-        marginHorizontal: 4,
-      }}
-    />
-  );
+  function renderDialogueItem(item, index) {
+    return (
+      <ArabicTextCard
+        key={`${item.id}-${index}`}
+        arabic={item.arabic}
+        transcription={item.transcription}
+        russian={item.russian}
+        speaker={item.speaker}
+        showTranscription={showTranscription}
+        style={{ 
+          marginHorizontal: 4,
+        }}
+      />
+    );
+  }
 
   return (
-    <View style={styles.container}>
+    <Screen>
       <LinearGradient
         colors={['#4338CA', '#6366F1', '#8B5CF6']}
         style={styles.headerGradient}
@@ -118,25 +119,15 @@ export default function DialogDetailScreen({ route }) {
           </LinearGradient>
         </Surface>
       </ScrollView>
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
-    paddingBottom: Platform.OS === 'web' ? 0 : 70, // Отступ для навигационной панели
-    ...(Platform.OS === 'web' && {
-      height: '100vh',
-      overflow: 'hidden',
-    }),
-  },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
   },
   headerGradient: {
     paddingBottom: 28,
@@ -236,4 +227,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '700',
   },
-}); 
+});
+

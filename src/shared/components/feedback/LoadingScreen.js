@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, ActivityIndicator, Surface } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function LoadingScreen() {
+export function LoadingScreen() {
   return (
     <LinearGradient
       colors={['#4338CA', '#6366F1', '#8B5CF6']}

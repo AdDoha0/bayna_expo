@@ -13,13 +13,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // Базовая высота контента хедера
 const BASE_HEADER_HEIGHT = 240;
+
 // Полная высота хедера с учетом StatusBar и platform
-const getFullHeaderHeight = () => {
+function getFullHeaderHeight() {
   const statusBarHeight = Platform.OS === 'web' ? 0 : (StatusBar.currentHeight || 0);
   return BASE_HEADER_HEIGHT + statusBarHeight;
-};
+}
 
-export default function AnimatedHeader({
+export function AnimatedHeader({
   scrollY,
   arabicTitle,
   title,
@@ -130,4 +131,5 @@ const styles = StyleSheet.create({
     opacity: 0.95,
     lineHeight: 24,
   },
-}); 
+});
+

@@ -3,40 +3,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
-import { Provider as PaperProvider, MD3LightTheme } from 'react-native-paper';
-import { Platform, View } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { theme } from './shared/constants';
+import { Platform, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import DialogsListScreen from './screens/DialogsListScreen';
-import DialogDetailScreen from './screens/DialogDetailScreen';
-import VocabularyScreen from './screens/VocabularyScreen';
-import ProgressScreen from './screens/ProgressScreen';
-import SettingsScreen from './screens/SettingsScreen';
+// Импортируем экраны напрямую
+import { DialogsListScreen } from './features/dialogs/screens/DialogsListScreen';
+import { DialogDetailScreen } from './features/dialogs/screens/DialogDetailScreen';
+import { VocabularyScreen } from './features/vocabulary/screens/VocabularyScreen';
+import { ProgressScreen } from './features/progress/screens/ProgressScreen';
+import { SettingsScreen } from './features/settings/screens/SettingsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const theme = {
-  ...MD3LightTheme,
-  colors: {
-    ...MD3LightTheme.colors,
-    primary: '#6366F1',
-    primaryContainer: '#EEF2FF',
-    secondary: '#8B5CF6',
-    tertiary: '#EC4899',
-    surface: '#FFFFFF',
-    background: '#F8FAFC',
-    surfaceVariant: '#F1F5F9',
-    outline: '#6366F1',
-    onPrimary: '#FFFFFF',
-    onSurface: '#1E293B',
-    onSurfaceVariant: '#475569',
-    shadow: '#000000',
-    error: '#EF4444',
-    success: '#10B981',
-  },
-  roundness: 24,
-};
 
 // Stack Navigator для диалогов
 function DialogsStack() {

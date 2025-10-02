@@ -1,0 +1,2 @@
+export { dialogsData } from './dialogsData';
+

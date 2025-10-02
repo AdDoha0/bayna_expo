@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 
-export default function ArabicTextCard({ 
+export function ArabicTextCard({ 
   arabic, 
   transcription, 
   russian, 
