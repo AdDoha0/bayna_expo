@@ -3,7 +3,7 @@ import { View, StyleSheet, Animated } from 'react-native';
 import { Text, Card as PaperCard } from 'react-native-paper';
 import { Screen, AnimatedHeader, Card } from '../../../shared/components';
 import { StatCard, AchievementCard, ProgressChart, WeeklyChart } from '../components';
-import { StatsSection } from '../sections';
+import { StatsSection, ProgressBarSection, AchievementsSection } from '../sections';
 
 export function ProgressScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -56,28 +56,20 @@ export function ProgressScreen() {
         scrollEventThrottle={16}
       >
         <Animated.View style={{ paddingTop: contentPaddingTop }}>
-        {/* Основная статистика */}
-        <StatsSection progressData={progressData} />
+        
+          {/* Секции */}
 
-        {/* Прогресс-бары */}
-        <ProgressChart progressData={progressData} />
+          {/* Основная статистика */}
+          <StatsSection progressData={progressData} />
+          {/* Прогресс-бары */}
+          <ProgressBarSection progressData={progressData} weeklyProgress={weeklyProgress} />
+          {/* Достижения */}
+          <AchievementsSection achievements={achievements} />
 
-        {/* График активности */}
-        <WeeklyChart weeklyProgress={weeklyProgress} />
 
-        {/* Достижения */}
-        <Card style={styles.achievementsCard} elevation={3}>
-          <PaperCard.Content style={styles.achievementsContent}>
-            <Text variant="titleLarge" style={styles.achievementsTitle}>
-              🏆 Достижения
-            </Text>
-            <View style={styles.achievementsList}>
-              {achievements.map(achievement => (
-                <AchievementCard key={achievement.id} achievement={achievement} />
-              ))}
-            </View>
-          </PaperCard.Content>
-        </Card>
+          {/* Конец Секций */}
+
+
         </Animated.View>
       </Animated.ScrollView>
     </Screen>
