@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, Card as PaperCard } from 'react-native-paper';
+import { Text, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card } from '../../../shared/components';
 
 const { width } = Dimensions.get('window');
 
 export function StatCard({ title, value, subtitle, icon, color }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   return (
     <Card 
       style={[styles.statCard, { borderLeftColor: color }]} 
@@ -29,12 +32,12 @@ export function StatCard({ title, value, subtitle, icon, color }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   statCard: {
     flex: 1,
     minWidth: (width - 48) / 2,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderLeftWidth: 6,
   },
   statContent: {
@@ -54,11 +57,11 @@ const styles = StyleSheet.create({
   },
   statTitle: {
     fontWeight: '600',
-    color: '#1E293B',
+    color: theme.colors.onSurface,
     marginBottom: 4,
   },
   statSubtitle: {
-    color: '#64748B',
+    color: theme.colors.onSurfaceVariant,
   },
 });
 

@@ -11,6 +11,7 @@ export function ArabicTextCard({
   style 
 }) {
   const theme = useTheme();
+  const styles = createStyles(theme);
   
   const speakerName = speaker === 'А' ? 'هشام' : 'بلال';
   const speakerNameRussian = speaker === 'А' ? 'Хишам' : 'Биляль';
@@ -66,13 +67,13 @@ export function ArabicTextCard({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   container: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: 12,
     marginVertical: 8,
     marginHorizontal: 16,
-    shadowColor: '#000',
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -91,18 +92,18 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
     fontWeight: '600',
     fontSize: 16,
-    color: '#333',
+    color: theme.colors.onSurface,
     ...(Platform.OS === 'web' && {
       direction: 'rtl',
       unicodeBidi: 'bidi-override',
     }),
   },
   arabicContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderRadius: 8,
     padding: 20,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 40,
     fontSize: 24,
-    color: '#000',
+    color: theme.colors.onSurface,
     fontFamily: Platform.OS === 'web' ? 'Arial, sans-serif' : 'System',
   },
   webArabicText: {
@@ -131,13 +132,13 @@ const styles = StyleSheet.create({
   speakerNameRussian: {
     fontWeight: '600',
     fontSize: 14,
-    color: '#666',
+    color: theme.colors.onSurfaceVariant,
   },
   russianContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderRadius: 8,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -147,13 +148,13 @@ const styles = StyleSheet.create({
   },
   russianText: {
     textAlign: 'left',
-    color: '#000',
+    color: theme.colors.onSurface,
     fontWeight: '400',
     lineHeight: 28,
     fontSize: 18,
   },
   transcriptionContainer: {
-    backgroundColor: '#FFFBF0',
+    backgroundColor: theme.dark ? 'rgba(245, 158, 11, 0.2)' : '#FFFBF0',
     borderRadius: 8,
     padding: 12,
     marginTop: 12,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   transcriptionText: {
     textAlign: 'left',
     fontStyle: 'italic',
-    color: '#92400E',
+    color: theme.dark ? '#FCD34D' : '#92400E',
     lineHeight: 20,
     fontSize: 14,
   },

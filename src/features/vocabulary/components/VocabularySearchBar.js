@@ -8,6 +8,7 @@ export function VocabularySearchBar({
   placeholder = "Поиск слов..." 
 }) {
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   return (
     <Surface style={styles.searchContainer} elevation={2}>
@@ -22,9 +23,9 @@ export function VocabularySearchBar({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   searchContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderRadius: 20,
     marginBottom: 16,
     elevation: 2,

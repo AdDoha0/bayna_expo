@@ -8,6 +8,7 @@ import {
 import {
   Text,
   Surface,
+  useTheme,
 } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -27,7 +28,14 @@ export function AnimatedHeader({
   subtitle,
   decorativeElement = null,
 }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
   const fullHeaderHeight = getFullHeaderHeight();
+  
+  // Динамические цвета градиента в зависимости от темы
+  const gradientColors = theme.dark
+    ? [theme.colors.primary, theme.colors.secondary, theme.colors.tertiary]
+    : ['#4338CA', '#6366F1', '#8B5CF6'];
   
   // Анимация для заголовка
   const headerTranslateY = scrollY.interpolate({
@@ -63,7 +71,7 @@ export function AnimatedHeader({
         ]}
       >
         <LinearGradient
-          colors={['#4338CA', '#6366F1', '#8B5CF6']}
+          colors={gradientColors}
           style={styles.headerGradient}
         >
           <Surface style={styles.headerSurface} elevation={0}>
@@ -86,7 +94,7 @@ export function AnimatedHeader({
   };
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   headerContainer: {
     position: 'absolute',
     top: 0,
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   headerSubtitle: {
-    color: '#E0E7FF',
+    color: theme.dark ? '#E0E7FF' : '#E0E7FF',
     textAlign: 'center',
     opacity: 0.95,
     lineHeight: 24,

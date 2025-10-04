@@ -1,9 +1,12 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, Divider, Card as PaperCard } from 'react-native-paper';
+import { Text, Divider, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card } from '../../../shared/components';
 
 export function SettingsSection({ title, children }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   // Добавляем разделители между элементами
   const childrenWithDividers = React.Children.toArray(children).reduce((acc, child, index, array) => {
     acc.push(child);
@@ -25,12 +28,12 @@ export function SettingsSection({ title, children }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   settingsCard: {
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     marginBottom: 20,
-    shadowColor: '#6366F1',
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -40,13 +43,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontWeight: '700',
-    color: '#1E293B',
+    color: theme.colors.onSurface,
     padding: 20,
     paddingBottom: 16,
   },
   divider: {
     marginHorizontal: 20,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: theme.colors.surfaceVariant,
   },
 });
 

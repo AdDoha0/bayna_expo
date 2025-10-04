@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { StatCard } from '../components';
 
 export function StatsSection({ progressData }) {
+    const theme = useTheme();
     const progressPercentage = useMemo(
       () => Math.round((progressData.completedLessons / progressData.totalLessons) * 100),
       [progressData]
@@ -15,14 +17,14 @@ export function StatsSection({ progressData }) {
           value={`${progressData.completedLessons}/${progressData.totalLessons}`}
           subtitle={`${progressPercentage}% завершено`}
           icon="📖"
-          color="#6366F1"
+          color={theme.colors.primary}
         />
         <StatCard
           title="Изучено слов"
           value={`${progressData.learnedWords}`}
           subtitle={`из ${progressData.totalWords} слов`}
           icon="📚"
-          color="#10B981"
+          color={theme.colors.success}
         />
         <StatCard
           title="Дней подряд"
@@ -36,7 +38,7 @@ export function StatsSection({ progressData }) {
           value={`${Math.floor(progressData.totalStudyTime / 60)}ч ${progressData.totalStudyTime % 60}м`}
           subtitle="общее время"
           icon="⏱️"
-          color="#8B5CF6"
+          color={theme.colors.secondary}
         />
       </View>
     );

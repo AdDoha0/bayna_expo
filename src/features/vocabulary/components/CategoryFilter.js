@@ -9,6 +9,7 @@ export function CategoryFilter({
   onCategorySelect 
 }) {
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   function renderCategoryChip({ item: category }) {
     const isSelected = selectedCategory === category;
@@ -43,9 +44,9 @@ export function CategoryFilter({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   filtersContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     borderRadius: 20,
     marginBottom: 20,
     paddingVertical: 8,

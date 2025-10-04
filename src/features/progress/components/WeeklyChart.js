@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Card as PaperCard } from 'react-native-paper';
+import { Text, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card } from '../../../shared/components';
 
 export function WeeklyChart({ weeklyProgress }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   function BarItem({ day, minutes }) {
     return (
       <View style={styles.barContainer}>
@@ -13,7 +16,7 @@ export function WeeklyChart({ weeklyProgress }) {
               styles.bar,
               {
                 height: Math.max((minutes / 40) * 80, 4),
-                backgroundColor: minutes > 0 ? '#6366F1' : '#E5E7EB',
+                backgroundColor: minutes > 0 ? theme.colors.primary : theme.colors.surfaceVariant,
               }
             ]}
           />
@@ -48,10 +51,10 @@ export function WeeklyChart({ weeklyProgress }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   chartCard: {
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     marginBottom: 20,
   },
   chartContent: {
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
   },
   chartTitle: {
     fontWeight: '700',
-    color: '#1E293B',
+    color: theme.colors.onSurface,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -82,16 +85,17 @@ const styles = StyleSheet.create({
   },
   bar: {
     width: 20,
-    backgroundColor: '#6366F1',
+    backgroundColor: theme.colors.primary,
     borderRadius: 4,
   },
   dayLabel: {
-    color: '#64748B',
+    color: theme.colors.onSurfaceVariant,
     fontWeight: '600',
     marginBottom: 2,
   },
   minutesLabel: {
-    color: '#94A3B8',
+    color: theme.colors.onSurfaceVariant,
+    opacity: 0.8,
     fontSize: 11,
   },
 });

@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Card as PaperCard } from 'react-native-paper';
+import { Text, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card, Chip } from '../../../shared/components';
 import { colors } from '../../../shared/constants';
 
 export function WordCard({ word }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   function getCategoryColor(category) {
-    return colors.category[category] || '#6366F1';
+    return colors.category[category] || theme.colors.primary;
   }
 
   return (
@@ -36,12 +39,12 @@ export function WordCard({ word }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   wordCard: {
     marginBottom: 16,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#6366F1',
+    backgroundColor: theme.colors.surface,
+    shadowColor: theme.colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   arabicWord: {
-    color: '#4338CA',
+    color: theme.colors.primary,
     fontWeight: '800',
     textAlign: 'right',
     writingDirection: 'rtl',
@@ -70,13 +73,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   transcription: {
-    color: '#8B5CF6',
+    color: theme.colors.secondary,
     fontStyle: 'italic',
     marginBottom: 8,
     textAlign: 'center',
   },
   russianWord: {
-    color: '#1E293B',
+    color: theme.colors.onSurface,
     fontWeight: '600',
     textAlign: 'center',
   },

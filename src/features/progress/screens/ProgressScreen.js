@@ -66,7 +66,6 @@ export function ProgressScreen() {
           {/* Достижения */}
           <AchievementsSection achievements={achievements} />
 
-
           {/* Конец Секций */}
 
 

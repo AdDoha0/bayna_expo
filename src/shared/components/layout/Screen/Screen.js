@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { getPlatformStyles, isWeb } from '../../../utils';
 
 export function Screen({ children, style, paddingBottom = true }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   return (
     <View style={[
       styles.container,
@@ -15,10 +19,10 @@ export function Screen({ children, style, paddingBottom = true }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: theme.colors.background,
   },
   withPadding: {
     paddingBottom: 70, // Отступ для навигационной панели

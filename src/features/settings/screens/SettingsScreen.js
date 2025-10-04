@@ -1,19 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { View, StyleSheet, Alert, Animated } from 'react-native';
+import React, { useRef } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Screen, AnimatedHeader } from '../../../shared/components';
 import { SettingItem, ActionItem, SettingsSection } from '../components';
+import { useSettings } from '../model/SettingsContext';
 
 export function SettingsScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [settings, setSettings] = useState({
-    notifications: true,
-    soundEffects: true,
-    autoTranscription: false,
-    dailyReminder: true,
-    darkTheme: false,
-    arabicFont: 'standard',
-  });
+  
+  // Используем глобальный стейт настроек из Context
+  const { settings, toggle, appVersion, actions } = useSettings();
 
   // Используем AnimatedHeader компонент
   const { headerComponent, contentPaddingTop } = AnimatedHeader({
@@ -22,45 +18,6 @@ export function SettingsScreen() {
     title: '⚙️ Настройки',
     subtitle: 'Персонализируйте ваше обучение арабскому языку',
   });
-
-  function toggleSetting(key) {
-    setSettings(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  }
-
-  function showInfo(title, message) {
-    Alert.alert(title, message, [{ text: 'OK' }]);
-  }
-
-  function resetProgress() {
-    Alert.alert(
-      'Сброс прогресса',
-      'Вы уверены, что хотите сбросить весь прогресс обучения? Это действие нельзя отменить.',
-      [
-        { text: 'Отмена', style: 'cancel' },
-        { text: 'Сбросить', style: 'destructive', onPress: () => {
-          // Здесь будет логика сброса прогресса
-          Alert.alert('Прогресс сброшен', 'Ваш прогресс был успешно сброшен.');
-        }}
-      ]
-    );
-  }
-
-  function exportData() {
-    Alert.alert(
-      'Экспорт данных',
-      'Ваши данные будут экспортированы в файл для резервного копирования.',
-      [
-        { text: 'Отмена', style: 'cancel' },
-        { text: 'Экспортировать', onPress: () => {
-          // Здесь будет логика экспорта данных
-          Alert.alert('Успешно', 'Данные экспортированы в файл exports/backup.json');
-        }}
-      ]
-    );
-  }
 
   return (
     <Screen>
@@ -83,7 +40,7 @@ export function SettingsScreen() {
             title="Push-уведомления"
             subtitle="Получать напоминания об изучении"
             value={settings.notifications}
-            onToggle={() => toggleSetting('notifications')}
+            onToggle={() => toggle('notifications')}
             icon="bell"
           />
           
@@ -91,7 +48,7 @@ export function SettingsScreen() {
             title="Звуковые эффекты"
             subtitle="Воспроизводить звуки в приложении"
             value={settings.soundEffects}
-            onToggle={() => toggleSetting('soundEffects')}
+            onToggle={() => toggle('soundEffects')}
             icon="volume-high"
           />
           
@@ -99,7 +56,7 @@ export function SettingsScreen() {
             title="Ежедневные напоминания"
             subtitle="Напоминать о занятиях каждый день"
             value={settings.dailyReminder}
-            onToggle={() => toggleSetting('dailyReminder')}
+            onToggle={() => toggle('dailyReminder')}
             icon="calendar-clock"
           />
         </SettingsSection>
@@ -110,21 +67,21 @@ export function SettingsScreen() {
             title="Автопоказ транскрипции"
             subtitle="Показывать транскрипцию автоматически"
             value={settings.autoTranscription}
-            onToggle={() => toggleSetting('autoTranscription')}
+            onToggle={() => toggle('autoTranscription')}
             icon="text"
           />
           
           <ActionItem
             title="Размер арабского шрифта"
             subtitle="Настроить размер текста на арабском"
-            onPress={() => showInfo('Размер шрифта', 'Функция будет доступна в следующем обновлении')}
+            onPress={() => {}}
             icon="format-size"
           />
           
           <ActionItem
             title="Скорость воспроизведения"
             subtitle="Настроить скорость аудио"
-            onPress={() => showInfo('Скорость аудио', 'Функция будет доступна в следующем обновлении')}
+            onPress={() => {}}
             icon="speedometer"
           />
         </SettingsSection>
@@ -135,56 +92,39 @@ export function SettingsScreen() {
             title="Тёмная тема"
             subtitle="Использовать тёмное оформление"
             value={settings.darkTheme}
-            onToggle={() => toggleSetting('darkTheme')}
+            onToggle={() => toggle('darkTheme')}
             icon="weather-night"
           />
           
           <ActionItem
             title="Язык интерфейса"
             subtitle="Русский"
-            onPress={() => showInfo('Язык', 'Сейчас доступен только русский язык')}
+            onPress={() => {}}
             icon="translate"
           />
         </SettingsSection>
 
-        {/* Данные и хранение */}
-        <SettingsSection title="💾 Данные">
-          <ActionItem
-            title="Экспорт прогресса"
-            subtitle="Сохранить данные в файл"
-            onPress={exportData}
-            icon="download"
-          />
-          
-          <ActionItem
-            title="Сброс прогресса"
-            subtitle="Удалить все данные обучения"
-            onPress={resetProgress}
-            icon="delete-forever"
-            iconColor="#EF4444"
-          />
-        </SettingsSection>
 
         {/* О приложении */}
         <SettingsSection title="ℹ️ О приложении">
           <ActionItem
             title="Версия приложения"
-            subtitle="1.0.0"
-            onPress={() => showInfo('Версия', 'Байна Ядайк v1.0.0\nПриложение для изучения арабского языка')}
+            subtitle={appVersion}
+            onPress={() => {}}
             icon="information"
           />
           
           <ActionItem
             title="Обратная связь"
             subtitle="Сообщить об ошибке или предложить улучшение"
-            onPress={() => showInfo('Обратная связь', 'Отправьте ваши предложения на support@bayna-yadayk.com')}
+            onPress={actions.openFeedback}
             icon="message-text"
           />
           
           <ActionItem
             title="Оценить приложение"
             subtitle="Поставить оценку в магазине приложений"
-            onPress={() => showInfo('Оценка', 'Спасибо за использование приложения! Ваша оценка очень важна для нас.')}
+            onPress={actions.rateApp}
             icon="star"
           />
         </SettingsSection>

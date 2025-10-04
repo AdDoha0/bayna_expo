@@ -22,6 +22,16 @@ export function DialogDetailScreen({ route }) {
   const dialog = dialogsData.find(d => d.id === dialogId);
   const [showTranscription, setShowTranscription] = useState(false);
   const theme = useTheme();
+  const styles = createStyles(theme);
+
+  // Динамические цвета градиента в зависимости от темы
+  const headerGradientColors = theme.dark
+    ? [theme.colors.primary, theme.colors.secondary, theme.colors.tertiary]
+    : ['#4338CA', '#6366F1', '#8B5CF6'];
+    
+  const footerGradientColors = theme.dark
+    ? [theme.colors.surfaceVariant, theme.colors.surface]
+    : ['#EEF2FF', '#F8FAFC'];
 
   if (!dialog) {
     return (
@@ -54,7 +64,7 @@ export function DialogDetailScreen({ route }) {
   return (
     <Screen>
       <LinearGradient
-        colors={['#4338CA', '#6366F1', '#8B5CF6']}
+        colors={headerGradientColors}
         style={styles.headerGradient}
       >
         <Surface style={styles.headerSurface} elevation={0}>
@@ -71,8 +81,8 @@ export function DialogDetailScreen({ route }) {
               icon={showTranscription ? "eye-off" : "eye"}
               onPress={() => setShowTranscription(!showTranscription)}
               style={styles.transcriptionButton}
-              buttonColor="rgba(255,255,255,0.9)"
-              textColor="#4338CA"
+              buttonColor={theme.dark ? theme.colors.surface : "rgba(255,255,255,0.9)"}
+              textColor={theme.colors.primary}
               compact={false}
             >
               {showTranscription ? 'Скрыть' : 'Показать'} транскрипцию
@@ -100,7 +110,7 @@ export function DialogDetailScreen({ route }) {
         
         <Surface style={styles.footer} elevation={0}>
           <LinearGradient
-            colors={['#EEF2FF', '#F8FAFC']}
+            colors={footerGradientColors}
             style={styles.footerGradient}
           >
             <View style={styles.footerContent}>
@@ -123,7 +133,7 @@ export function DialogDetailScreen({ route }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -160,7 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   controlsContainer: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: theme.dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)',
     borderRadius: 20,
     padding: 4,
     alignSelf: 'center',
@@ -208,17 +218,17 @@ const styles = StyleSheet.create({
   footerText: {
     fontWeight: '700',
     marginBottom: 8,
-    color: '#4338CA',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
   footerSubtext: {
     opacity: 0.8,
     marginBottom: 16,
-    color: '#6366F1',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
   successBadge: {
-    backgroundColor: '#10B981',
+    backgroundColor: theme.colors.success,
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 20,

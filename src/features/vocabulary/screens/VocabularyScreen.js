@@ -44,7 +44,7 @@ export function VocabularyScreen() {
             paddingBottom: 20,
           }, 
           { paddingTop: contentPaddingTop }
-        ]}>
+        ]}> 
           <VocabularySearchBar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}

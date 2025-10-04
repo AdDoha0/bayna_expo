@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Surface, Card as PaperCard } from 'react-native-paper';
+import { Text, IconButton, Surface, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card, Chip } from '../../../shared/components';
 import { colors } from '../../../shared/constants';
 
 export function DialogCard({ dialog, onPress }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   function getDifficultyColor(difficulty) {
-    return colors.difficulty[difficulty] || '#6366F1';
+    return colors.difficulty[difficulty] || theme.colors.primary;
   }
 
   function getDifficultyText(difficulty) {
@@ -55,7 +58,7 @@ export function DialogCard({ dialog, onPress }) {
             <IconButton
               icon="arrow-left"
               size={24}
-              iconColor="#6366F1"
+              iconColor={theme.colors.primary}
               style={styles.arrowIcon}
             />
           </Surface>
@@ -65,7 +68,7 @@ export function DialogCard({ dialog, onPress }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   dialogCard: {
     marginBottom: 20,
   },
@@ -82,14 +85,14 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     writingDirection: 'rtl',
     fontWeight: '800',
-    color: '#4338CA',
+    color: theme.colors.primary,
     marginBottom: 8,
     lineHeight: 32,
   },
   russianTitle: {
     lineHeight: 28,
     fontWeight: '600',
-    color: '#1E293B',
+    color: theme.colors.onSurface,
   },
   difficultyChip: {
     alignSelf: 'flex-start',
@@ -103,18 +106,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoChip: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: theme.colors.primaryContainer,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
     alignSelf: 'flex-start',
   },
   infoText: {
-    color: '#6366F1',
+    color: theme.colors.primary,
     fontWeight: '600',
   },
   arrowButton: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: theme.colors.primaryContainer,
     borderRadius: 20,
     marginLeft: 12,
   },

@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, ProgressBar, Card as PaperCard } from 'react-native-paper';
+import { Text, ProgressBar, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card } from '../../../shared/components';
 
 export function ProgressChart({ progressData }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
   const progressPercentage = (progressData.completedLessons / progressData.totalLessons) * 100;
   const wordsPercentage = (progressData.learnedWords / progressData.totalWords) * 100;
 
@@ -37,7 +39,7 @@ export function ProgressChart({ progressData }) {
           current={progressData.completedLessons}
           total={progressData.totalLessons}
           progress={progressPercentage}
-          color="#6366F1"
+          color={theme.colors.primary}
         />
 
         <ProgressItem
@@ -45,17 +47,17 @@ export function ProgressChart({ progressData }) {
           current={progressData.learnedWords}
           total={progressData.totalWords}
           progress={wordsPercentage}
-          color="#10B981"
+          color={theme.colors.success}
         />
       </PaperCard.Content>
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   progressCard: {
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     marginBottom: 20,
   },
   progressContent: {
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
   },
   progressTitle: {
     fontWeight: '700',
-    color: '#1E293B',
+    color: theme.colors.onSurface,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -78,12 +80,12 @@ const styles = StyleSheet.create({
   },
   progressValue: {
     fontWeight: '600',
-    color: '#6366F1',
+    color: theme.colors.primary,
   },
   progressBar: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: theme.colors.surfaceVariant,
   },
 });
 

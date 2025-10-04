@@ -10,6 +10,7 @@ export function ActionItem({
   iconColor 
 }) {
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   return (
     <List.Item
@@ -31,17 +32,17 @@ export function ActionItem({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   settingItem: {
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
   settingTitle: {
     fontWeight: '600',
-    color: '#374151',
+    color: theme.colors.onSurface,
   },
   settingDescription: {
-    color: '#6B7280',
+    color: theme.colors.onSurfaceVariant,
     fontSize: 14,
   },
 });

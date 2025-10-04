@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Card as PaperCard } from 'react-native-paper';
+import { Text, IconButton, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card } from '../../../shared/components';
 
 export function AchievementCard({ achievement }) {
+  const theme = useTheme();
+  const styles = createStyles(theme);
+  
   return (
     <Card 
       style={[
@@ -29,7 +32,7 @@ export function AchievementCard({ achievement }) {
           {achievement.completed && (
             <IconButton
               icon="check-circle"
-              iconColor="#10B981"
+              iconColor={theme.colors.success}
               size={24}
             />
           )}
@@ -39,15 +42,15 @@ export function AchievementCard({ achievement }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   achievementCard: {
     borderRadius: 16,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: theme.colors.background,
     marginBottom: 12,
   },
   achievementCompleted: {
-    backgroundColor: '#F0FDF4',
-    borderColor: '#10B981',
+    backgroundColor: theme.dark ? 'rgba(16, 185, 129, 0.15)' : '#F0FDF4',
+    borderColor: theme.colors.success,
     borderWidth: 1,
   },
   achievementContent: {
@@ -66,14 +69,15 @@ const styles = StyleSheet.create({
   },
   achievementTitle: {
     fontWeight: '600',
-    color: '#64748B',
+    color: theme.colors.onSurfaceVariant,
     marginBottom: 4,
   },
   achievementTitleCompleted: {
-    color: '#065F46',
+    color: theme.dark ? theme.colors.success : '#065F46',
   },
   achievementDescription: {
-    color: '#94A3B8',
+    color: theme.colors.onSurfaceVariant,
+    opacity: 0.8,
   },
 });
 
