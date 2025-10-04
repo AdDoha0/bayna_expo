@@ -32,7 +32,7 @@ export function StatCard({ title, value, subtitle, icon, color }) {
 const styles = StyleSheet.create({
   statCard: {
     flex: 1,
-    minWidth: (width - 52) / 2,
+    minWidth: (width - 48) / 2,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
     borderLeftWidth: 6,

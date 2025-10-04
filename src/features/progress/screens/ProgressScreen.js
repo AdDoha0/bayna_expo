@@ -3,6 +3,7 @@ import { View, StyleSheet, Animated } from 'react-native';
 import { Text, Card as PaperCard } from 'react-native-paper';
 import { Screen, AnimatedHeader, Card } from '../../../shared/components';
 import { StatCard, AchievementCard, ProgressChart, WeeklyChart } from '../components';
+import { StatsSection } from '../sections';
 
 export function ProgressScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -56,36 +57,7 @@ export function ProgressScreen() {
       >
         <Animated.View style={{ paddingTop: contentPaddingTop }}>
         {/* Основная статистика */}
-        <View style={styles.statsGrid}>
-          <StatCard
-            title="Завершено уроков"
-            value={`${progressData.completedLessons}/${progressData.totalLessons}`}
-            subtitle={`${Math.round(progressPercentage)}% завершено`}
-            icon="📖"
-            color="#6366F1"
-          />
-          <StatCard
-            title="Изучено слов"
-            value={`${progressData.learnedWords}`}
-            subtitle={`из ${progressData.totalWords} слов`}
-            icon="📚"
-            color="#10B981"
-          />
-          <StatCard
-            title="Дней подряд"
-            value={`${progressData.studyStreak}`}
-            subtitle="дней изучения"
-            icon="🔥"
-            color="#F59E0B"
-          />
-          <StatCard
-            title="Время обучения"
-            value={`${Math.floor(progressData.totalStudyTime / 60)}ч ${progressData.totalStudyTime % 60}м`}
-            subtitle="общее время"
-            icon="⏱️"
-            color="#8B5CF6"
-          />
-        </View>
+        <StatsSection progressData={progressData} />
 
         {/* Прогресс-бары */}
         <ProgressChart progressData={progressData} />
