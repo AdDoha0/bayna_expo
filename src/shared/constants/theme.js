@@ -83,6 +83,12 @@ export const colors = {
     'наука': '#06B6D4',
     'предметы': '#84CC16',
   },
+  partOfSpeech: {
+    noun: '#10B981',
+    verb: '#F97316',
+    adj: '#8B5CF6',
+    adv: '#06B6D4',
+    phrase: '#3B82F6',
+  },
 };
-
 

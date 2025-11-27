@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -14,24 +14,72 @@ import {
 } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Screen } from '../../../shared/components';
+import { LoadingScreen } from '../../../shared/components/feedback/LoadingScreen';
 import { ArabicTextCard } from '../components';
-import { dialogsData } from '../data';
+import { getLessonById } from '../../../db';
 
 export function DialogDetailScreen({ route }) {
   const { dialogId } = route.params;
-  const dialog = dialogsData.find(d => d.id === dialogId);
+  const [dialog, setDialog] = useState(null);
   const [showTranscription, setShowTranscription] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const theme = useTheme();
   const styles = createStyles(theme);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadDialog() {
+      setLoading(true);
+      setError(null);
+      try {
+        const lesson = await getLessonById(dialogId);
+        if (isMounted) {
+          setDialog(lesson);
+        }
+      } catch (err) {
+        console.warn('loadDialog error', err);
+        if (isMounted) {
+          setError('Не удалось загрузить диалог');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadDialog();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dialogId]);
 
   // Динамические цвета градиента в зависимости от темы
   const headerGradientColors = theme.dark
     ? [theme.colors.primary, theme.colors.secondary, theme.colors.tertiary]
     : ['#4338CA', '#6366F1', '#8B5CF6'];
-    
   const footerGradientColors = theme.dark
     ? [theme.colors.surfaceVariant, theme.colors.surface]
     : ['#EEF2FF', '#F8FAFC'];
+
+  if (loading) {
+    return <LoadingScreen message="Загрузка диалога..." />;
+  }
+
+  if (error) {
+    return (
+      <Screen>
+        <View style={styles.errorContainer}>
+          <Text variant="headlineSmall" style={{ color: theme.colors.error }}>
+            {error}
+          </Text>
+        </View>
+      </Screen>
+    );
+  }
 
   if (!dialog) {
     return (
@@ -54,7 +102,7 @@ export function DialogDetailScreen({ route }) {
         russian={item.russian}
         speaker={item.speaker}
         showTranscription={showTranscription}
-        style={{ 
+        style={{
           marginHorizontal: 4,
         }}
       />
@@ -72,7 +120,7 @@ export function DialogDetailScreen({ route }) {
             {dialog.subtitle}
           </Text>
           <Text variant="titleSmall" style={styles.headerSubtitle}>
-            {dialog.dialogues.length} реплик в диалоге
+            {(dialog.dialogues?.length || 0)} реплик в диалоге
           </Text>
           
           <Surface style={styles.controlsContainer} elevation={3}>
@@ -105,7 +153,7 @@ export function DialogDetailScreen({ route }) {
         })}
       >
         <View style={[styles.dialogsContainer, Platform.OS === 'web' && styles.webDialogsContainer]}>
-          {dialog.dialogues.map((item, index) => renderDialogueItem(item, index))}
+          {(dialog.dialogues || []).map((item, index) => renderDialogueItem(item, index))}
         </View>
         
         <Surface style={styles.footer} elevation={0}>
@@ -118,7 +166,7 @@ export function DialogDetailScreen({ route }) {
                 🎉 Диалог завершён!
               </Text>
               <Text variant="bodyMedium" style={styles.footerSubtext}>
-                Вы изучили {dialog.dialogues.length} реплик
+                Вы изучили {dialog.dialogues?.length || 0} реплик
               </Text>
               <Surface style={styles.successBadge} elevation={2}>
                 <Text variant="labelLarge" style={styles.successText}>
@@ -238,4 +286,3 @@ const createStyles = (theme) => StyleSheet.create({
     fontWeight: '700',
   },
 });
-

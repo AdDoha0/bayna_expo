@@ -3,13 +3,15 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Card as PaperCard, useTheme } from 'react-native-paper';
 import { Card, Chip } from '../../../shared/components';
 import { colors } from '../../../shared/constants';
+import { PARTS_OF_SPEECH_LABELS } from '../../../db';
 
 export function WordCard({ word }) {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const posLabel = PARTS_OF_SPEECH_LABELS[word.part_of_speech] || word.part_of_speech || '—';
   
-  function getCategoryColor(category) {
-    return colors.category[category] || theme.colors.primary;
+  function getCategoryColor(partOfSpeech) {
+    return colors.partOfSpeech?.[partOfSpeech] || theme.colors.primary;
   }
 
   return (
@@ -20,19 +22,19 @@ export function WordCard({ word }) {
             {word.arabic}
           </Text>
           <Chip
-            backgroundColor={getCategoryColor(word.category) + '20'}
-            textColor={getCategoryColor(word.category)}
+            backgroundColor={getCategoryColor(word.part_of_speech) + '20'}
+            textColor={getCategoryColor(word.part_of_speech)}
             style={styles.categoryChip}
             textStyle={styles.categoryChipText}
           >
-            {word.category}
+            {posLabel}
           </Chip>
         </View>
         <Text variant="titleMedium" style={styles.transcription}>
           {word.transcription}
         </Text>
         <Text variant="titleLarge" style={styles.russianWord}>
-          {word.russian}
+          {word.translation_ru}
         </Text>
       </PaperCard.Content>
     </Card>
@@ -84,4 +86,3 @@ const createStyles = (theme) => StyleSheet.create({
     textAlign: 'center',
   },
 });
-

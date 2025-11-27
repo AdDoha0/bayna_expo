@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, ActivityIndicator, Surface } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export function LoadingScreen() {
+export function LoadingScreen({ message = 'Загрузка данных...' }) {
   return (
     <LinearGradient
       colors={['#4338CA', '#6366F1', '#8B5CF6']}
@@ -32,7 +32,7 @@ export function LoadingScreen() {
         </Surface>
         
         <Text variant="titleMedium" style={styles.loadingText}>
-          Загрузка диалогов...
+          {message}
         </Text>
       </Surface>
     </LinearGradient>

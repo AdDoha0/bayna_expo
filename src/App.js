@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,6 +18,7 @@ import { VocabularyScreen } from './features/vocabulary/screens/VocabularyScreen
 import { ProgressScreen } from './features/progress/screens/ProgressScreen';
 import { SettingsScreen } from './features/settings/screens/SettingsScreen';
 import { LoadingScreen } from './shared/components/feedback/LoadingScreen';
+import { initDb, seedDbIfEmpty } from './db';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -145,10 +146,34 @@ function MainTabNavigator({ theme }) {
  */
 function ThemedApp() {
   const { isReady, settings } = useSettings();
+  const [dbReady, setDbReady] = useState(false);
   const theme = createAppTheme(settings.darkTheme);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function prepareDb() {
+      try {
+        await initDb();
+        await seedDbIfEmpty();
+      } catch (error) {
+        console.warn('DB init error', error);
+      } finally {
+        if (isMounted) {
+          setDbReady(true);
+        }
+      }
+    }
+
+    prepareDb();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // Show loading screen until settings are loaded from storage
-  if (!isReady) {
+  if (!isReady || !dbReady) {
     return <LoadingScreen />;
   }
 

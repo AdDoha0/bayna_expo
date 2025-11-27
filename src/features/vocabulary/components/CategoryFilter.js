@@ -11,21 +11,23 @@ export function CategoryFilter({
   const theme = useTheme();
   const styles = createStyles(theme);
 
-  function renderCategoryChip({ item: category }) {
-    const isSelected = selectedCategory === category;
+  function renderCategoryChip({ item }) {
+    const value = typeof item === 'string' ? item : item.value;
+    const label = typeof item === 'string' ? item : (item.label || item.value);
+    const isSelected = selectedCategory === value;
     
     return (
       <Chip
-        key={category}
+        key={value}
         mode={isSelected ? 'flat' : 'outlined'}
-        onPress={() => onCategorySelect(category)}
+        onPress={() => onCategorySelect(value)}
         style={[
           styles.filterChip,
           isSelected && { backgroundColor: theme.colors.primary + '20' }
         ]}
         textColor={isSelected ? theme.colors.primary : theme.colors.onSurface}
       >
-        {category}
+        {label}
       </Chip>
     );
   }
@@ -35,7 +37,7 @@ export function CategoryFilter({
       <FlatList
         data={categories}
         renderItem={renderCategoryChip}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => (typeof item === 'string' ? item : item.value)}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filtersContent}
@@ -59,4 +61,3 @@ const createStyles = (theme) => StyleSheet.create({
     marginRight: 8,
   },
 });
-

@@ -7,6 +7,7 @@ import { colors } from '../../../shared/constants';
 export function DialogCard({ dialog, onPress }) {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const dialoguesCount = Array.isArray(dialog.dialogues) ? dialog.dialogues.length : (dialog.dialoguesCount || 0);
   
   function getDifficultyColor(difficulty) {
     return colors.difficulty[difficulty] || theme.colors.primary;
@@ -42,7 +43,7 @@ export function DialogCard({ dialog, onPress }) {
             textColor={getDifficultyColor(dialog.difficulty)}
             style={styles.difficultyChip}
           >
-            {getDifficultyText(dialog.difficulty)}
+            {getDifficultyText(dialog.difficulty || '—')}
           </Chip>
         </View>
         
@@ -50,7 +51,7 @@ export function DialogCard({ dialog, onPress }) {
           <View style={styles.dialogInfo}>
             <Surface style={styles.infoChip} elevation={1}>
               <Text variant="labelLarge" style={styles.infoText}>
-                📚 {dialog.dialogues.length} реплик
+                📚 {dialoguesCount} реплик
               </Text>
             </Surface>
           </View>
@@ -125,4 +126,3 @@ const createStyles = (theme) => StyleSheet.create({
     margin: 0,
   },
 });
-
