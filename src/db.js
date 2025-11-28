@@ -207,14 +207,34 @@ export async function seedDbIfEmpty() {
     return false;
   }
 
-  const sampleTextbook = {
-    title: 'Байна ядайк - Том 1',
-    description: 'Базовый курс диалогов и лексики для начинающих',
-    level: 'A1',
-    order_index: 1,
-  };
+  const sampleTextbooks = [
+    {
+      title: 'Байна ядайк - Том 1',
+      description: 'Базовый курс диалогов и лексики для начинающих',
+      level: 'A1',
+      order_index: 1,
+    },
+    {
+      title: 'Байна ядайк - Том 2',
+      description: 'Продолжаем укреплять основу',
+      level: 'A2',
+      order_index: 2,
+    },
+    {
+      title: 'Байна ядайк - Том 3',
+      description: 'Углубляемся в лексику и диалоги',
+      level: 'B1',
+      order_index: 3,
+    },
+    {
+      title: 'Байна ядайк - Том 4',
+      description: 'Закрепление и расширение контекста',
+      level: 'B2',
+      order_index: 4,
+    },
+  ];
 
-  const sampleLessons = [
+  const baseLessons = [
     {
       number: 1,
       title: 'الدرس الأول - التعارف',
@@ -282,31 +302,6 @@ export async function seedDbIfEmpty() {
     { lessonNumber: 3, vocabKey: 'expensive', order_index: 3 },
   ];
 
-  const textbookResult = await run(
-    'INSERT INTO textbooks (title, description, level, order_index) VALUES (?, ?, ?, ?);',
-    [sampleTextbook.title, sampleTextbook.description, sampleTextbook.level, sampleTextbook.order_index]
-  );
-  const textbookId = textbookResult.lastInsertRowId;
-
-  const lessonIdByNumber = {};
-
-  for (const lesson of sampleLessons) {
-    const content = JSON.stringify({
-      dialogues: lesson.dialogues,
-      difficulty: lesson.difficulty,
-    });
-
-    const lessonResult = await run(
-      `
-        INSERT INTO lessons (textbook_id, number, title, subtitle, content, audio_url, order_index)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
-      `,
-      [textbookId, lesson.number, lesson.title, lesson.subtitle, content, null, lesson.order_index]
-    );
-
-    lessonIdByNumber[lesson.number] = lessonResult.lastInsertRowId;
-  }
-
   const vocabularyIdByKey = {};
 
   for (const word of sampleVocabulary) {
@@ -329,21 +324,48 @@ export async function seedDbIfEmpty() {
     vocabularyIdByKey[word.key] = vocabResult.lastInsertRowId;
   }
 
-  for (const entry of sampleLessonVocabulary) {
-    const lessonId = lessonIdByNumber[entry.lessonNumber];
-    const vocabId = vocabularyIdByKey[entry.vocabKey];
+  for (const textbook of sampleTextbooks) {
+    const textbookResult = await run(
+      'INSERT INTO textbooks (title, description, level, order_index) VALUES (?, ?, ?, ?);',
+      [textbook.title, textbook.description, textbook.level, textbook.order_index]
+    );
+    const textbookId = textbookResult.lastInsertRowId;
 
-    if (!lessonId || !vocabId) {
-      continue;
+    const lessonIdByNumber = {};
+
+    for (const lesson of baseLessons) {
+      const content = JSON.stringify({
+        dialogues: lesson.dialogues,
+        difficulty: lesson.difficulty,
+      });
+
+      const lessonResult = await run(
+        `
+          INSERT INTO lessons (textbook_id, number, title, subtitle, content, audio_url, order_index)
+          VALUES (?, ?, ?, ?, ?, ?, ?);
+        `,
+        [textbookId, lesson.number, lesson.title, lesson.subtitle, content, null, lesson.order_index]
+      );
+
+      lessonIdByNumber[lesson.number] = lessonResult.lastInsertRowId;
     }
 
-    await run(
-      `
-        INSERT INTO lesson_vocabulary (lesson_id, vocabulary_id, order_index)
-        VALUES (?, ?, ?);
-      `,
-      [lessonId, vocabId, entry.order_index || 0]
-    );
+    for (const entry of sampleLessonVocabulary) {
+      const lessonId = lessonIdByNumber[entry.lessonNumber];
+      const vocabId = vocabularyIdByKey[entry.vocabKey];
+
+      if (!lessonId || !vocabId) {
+        continue;
+      }
+
+      await run(
+        `
+          INSERT INTO lesson_vocabulary (lesson_id, vocabulary_id, order_index)
+          VALUES (?, ?, ?);
+        `,
+        [lessonId, vocabId, entry.order_index || 0]
+      );
+    }
   }
 
   return true;

@@ -7,6 +7,7 @@ export function DialogsList({
   onDialogPress, 
   scrollY, 
   contentPaddingTop,
+  renderHeaderContent,
   style 
 }) {
   function renderDialogItem({ item }) {
@@ -19,7 +20,15 @@ export function DialogsList({
   }
 
   function ListHeader() {
-    return <Animated.View style={{ paddingTop: contentPaddingTop }} />;
+    return (
+      <Animated.View style={[styles.listHeader, { paddingTop: contentPaddingTop }]}>
+        {renderHeaderContent ? (
+          <Animated.View style={styles.headerContentContainer}>
+            {renderHeaderContent()}
+          </Animated.View>
+        ) : null}
+      </Animated.View>
+    );
   }
 
   return (
@@ -54,6 +63,13 @@ const styles = StyleSheet.create({
   flatList: {
     flex: 1,
   },
+  listHeader: {
+    paddingBottom: 8,
+  },
+  headerContentContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
   webFlatList: {
     height: '100%',
     overflow: 'auto',
@@ -69,4 +85,3 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
 });
-
