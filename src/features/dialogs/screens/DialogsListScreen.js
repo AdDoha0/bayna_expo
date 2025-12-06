@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Animated, ScrollView, Pressable } from 'react-native';
 import { Text, Surface, useTheme } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Screen, AnimatedHeader } from '../../../shared/components';
 import { LoadingScreen } from '../../../shared/components/feedback/LoadingScreen';
 import { DialogsList } from '../components';
@@ -107,12 +106,7 @@ export function DialogsListScreen({ navigation }) {
 
     return (
       <Surface style={styles.textbookSwitcher} elevation={0}>
-        <LinearGradient
-          colors={theme.dark ? ['#0F172A', '#0B1220'] : ['#E0F2FE', '#F8FAFC']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.textbookGradient}
-        >
+        <View style={styles.switcherInner}>
           <View style={styles.switcherHeader}>
             <Text variant="titleMedium" style={styles.switcherTitle}>Выберите учебник</Text>
             <Text variant="bodySmall" style={styles.switcherSubtitle}>
@@ -136,7 +130,7 @@ export function DialogsListScreen({ navigation }) {
                   }}
                   style={[
                     styles.textbookButton,
-                    isActive && { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary, shadowOpacity: 0.2 },
+                    isActive && { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary, shadowOpacity: 0.14 },
                   ]}
                 >
                   <Text variant="titleSmall" style={[styles.textbookTitle, isActive && { color: theme.colors.primary }]}>
@@ -149,7 +143,7 @@ export function DialogsListScreen({ navigation }) {
               );
             })}
           </ScrollView>
-        </LinearGradient>
+        </View>
       </Surface>
     );
   }
@@ -269,8 +263,11 @@ const createStyles = (theme) => StyleSheet.create({
     marginBottom: 8,
     borderRadius: 20,
     overflow: 'hidden',
+    backgroundColor: theme.dark ? '#0F172A' : '#FFFFFF',
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '12',
   },
-  textbookGradient: {
+  switcherInner: {
     paddingVertical: 16,
   },
   switcherHeader: {
@@ -297,7 +294,7 @@ const createStyles = (theme) => StyleSheet.create({
     paddingHorizontal: 14,
     minWidth: 170,
     marginRight: 10,
-    backgroundColor: theme.dark ? 'rgba(15,23,42,0.8)' : 'rgba(255,255,255,0.9)',
+    backgroundColor: theme.dark ? '#0B1220' : '#FFFFFF',
     shadowColor: '#0F172A',
     shadowOpacity: 0.08,
     shadowRadius: 10,

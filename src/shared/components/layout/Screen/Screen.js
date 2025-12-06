@@ -11,7 +11,7 @@ export function Screen({ children, style, paddingBottom = true }) {
   return (
     <View style={[styles.container, style]}>
       <LinearGradient
-        colors={theme.dark ? ['#050915', '#0B172A'] : ['#F6F7FB', '#E0F2FE']}
+        colors={theme.dark ? ['#050915', '#0B1220'] : ['#FCFCFD', '#F2F3F5']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}

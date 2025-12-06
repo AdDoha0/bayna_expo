@@ -9,16 +9,13 @@ export function WordCard({ word }) {
   const theme = useTheme();
   const styles = createStyles(theme);
   const posLabel = PARTS_OF_SPEECH_LABELS[word.part_of_speech] || word.part_of_speech || '—';
-  const gradientColors = theme.dark
-    ? ['rgba(14,165,233,0.08)', '#0B172A']
-    : ['#E0F2FE', '#FFFFFF'];
   
   function getCategoryColor(partOfSpeech) {
     return colors.partOfSpeech?.[partOfSpeech] || theme.colors.primary;
   }
 
   return (
-    <Card style={styles.wordCard} elevation={4} gradient gradientColors={gradientColors}>
+    <Card style={styles.wordCard} elevation={4}>
       <PaperCard.Content style={styles.wordContent}>
         <View style={styles.wordHeader}>
           <Text variant="headlineSmall" style={styles.arabicWord}>
@@ -52,9 +49,9 @@ const createStyles = (theme) => StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.primary + '12',
     shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
   },
   wordContent: {
     padding: 20,

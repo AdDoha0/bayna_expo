@@ -8,10 +8,7 @@ export function DialogCard({ dialog, onPress }) {
   const theme = useTheme();
   const styles = createStyles(theme);
   const dialoguesCount = Array.isArray(dialog.dialogues) ? dialog.dialogues.length : (dialog.dialoguesCount || 0);
-  const gradientColors = theme.dark
-    ? ['rgba(14,165,233,0.12)', 'rgba(15,23,42,0.6)']
-    : ['#E0F2FE', '#FFFFFF'];
-  
+
   function getDifficultyColor(difficulty) {
     return colors.difficulty[difficulty] || theme.colors.primary;
   }
@@ -28,8 +25,7 @@ export function DialogCard({ dialog, onPress }) {
   return (
     <Card
       style={styles.dialogCard}
-      gradient={true}
-      gradientColors={gradientColors}
+      elevation={0}
       onPress={() => onPress(dialog)}
     >
       <PaperCard.Content style={styles.cardContent}>
@@ -81,7 +77,13 @@ const createStyles = (theme) => StyleSheet.create({
   dialogCard: {
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: theme.colors.primary + '10',
+    borderColor: theme.colors.primary + '18',
+    backgroundColor: theme.dark ? '#0F172A' : '#FFFFFF',
+    shadowColor: 'transparent',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 0,
   },
   cardContent: {
     padding: 24,
@@ -124,6 +126,11 @@ const createStyles = (theme) => StyleSheet.create({
     marginLeft: 12,
     borderWidth: 1,
     borderColor: theme.colors.primary + '25',
+    shadowColor: 'transparent',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 0,
   },
   arrowIcon: {
     margin: 0,
@@ -138,6 +145,11 @@ const createStyles = (theme) => StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 14,
+    shadowColor: 'transparent',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 0,
   },
   ctaText: {
     color: theme.colors.onSurface,
