@@ -15,14 +15,14 @@ export function WordCard({ word }) {
   }
 
   return (
-    <Card style={styles.wordCard} elevation={4}>
+    <Card style={styles.wordCard} elevation={0}>
       <PaperCard.Content style={styles.wordContent}>
         <View style={styles.wordHeader}>
-          <Text variant="headlineSmall" style={styles.arabicWord}>
+          <Text variant="titleLarge" style={styles.arabicWord}>
             {word.arabic}
           </Text>
           <Chip
-            backgroundColor={getCategoryColor(word.part_of_speech) + '20'}
+            backgroundColor={theme.colors.primary + '10'}
             textColor={getCategoryColor(word.part_of_speech)}
             style={styles.categoryChip}
             textStyle={styles.categoryChipText}
@@ -48,10 +48,10 @@ const createStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.surface,
     borderWidth: 1,
     borderColor: theme.colors.primary + '12',
-    shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
+    shadowColor: 'transparent',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 0,
   },
   wordContent: {
     padding: 20,
@@ -63,14 +63,15 @@ const createStyles = (theme) => StyleSheet.create({
     marginBottom: 12,
   },
   arabicWord: {
-    color: theme.colors.primary,
-    fontWeight: '800',
+    color: theme.colors.onSurface,
+    fontWeight: '700',
     textAlign: 'right',
     writingDirection: 'rtl',
     flex: 1,
   },
   categoryChip: {
     marginLeft: 12,
+    borderWidth: 0,
   },
   categoryChipText: {
     fontSize: 12,

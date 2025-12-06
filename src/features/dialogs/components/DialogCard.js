@@ -31,14 +31,14 @@ export function DialogCard({ dialog, onPress }) {
       <PaperCard.Content style={styles.cardContent}>
         <View style={styles.metaRow}>
           <Chip
-            backgroundColor={getDifficultyColor(dialog.difficulty) + '20'}
-            textColor={getDifficultyColor(dialog.difficulty)}
+            backgroundColor={theme.colors.primary + '12'}
+            textColor={theme.colors.onSurface}
             style={styles.difficultyChip}
           >
             {getDifficultyText(dialog.difficulty || '—')}
           </Chip>
           <Surface style={styles.countBadge} elevation={0}>
-            <Text variant="labelLarge" style={styles.infoText}>
+            <Text variant="labelMedium" style={styles.infoText}>
               {dialoguesCount} реплик
             </Text>
           </Surface>
@@ -46,27 +46,26 @@ export function DialogCard({ dialog, onPress }) {
 
         <View style={styles.cardHeader}>
           <View style={styles.titleContainer}>
-            <Text variant="headlineSmall" style={styles.arabicTitle}>
+            <Text variant="titleLarge" style={styles.arabicTitle}>
               {dialog.title}
             </Text>
-            <Text variant="titleLarge" style={styles.russianTitle}>
+            <Text variant="titleMedium" style={styles.russianTitle}>
               {dialog.subtitle}
             </Text>
           </View>
         </View>
         
         <View style={styles.cardFooter}>
-          <Text variant="bodyLarge" style={styles.ctaText}>
+          <Text variant="bodyMedium" style={styles.ctaText}>
             Открыть диалог
           </Text>
-          <Surface style={styles.arrowButton} elevation={3}>
-            <IconButton
-              icon="arrow-right"
-              size={26}
-              iconColor={theme.colors.primary}
-              style={styles.arrowIcon}
-            />
-          </Surface>
+          <IconButton
+            icon="arrow-right"
+            size={24}
+            iconColor={theme.colors.primary}
+            style={styles.arrowIcon}
+            containerColor="transparent"
+          />
         </View>
       </PaperCard.Content>
     </Card>
@@ -75,10 +74,11 @@ export function DialogCard({ dialog, onPress }) {
 
 const createStyles = (theme) => StyleSheet.create({
   dialogCard: {
-    marginBottom: 20,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: theme.colors.primary + '18',
-    backgroundColor: theme.dark ? '#0F172A' : '#FFFFFF',
+    borderColor: theme.colors.primary + '12',
+    backgroundColor: theme.dark ? '#0D1118' : '#FFFFFF',
+    borderRadius: 18,
     shadowColor: 'transparent',
     shadowOpacity: 0,
     shadowRadius: 0,
@@ -86,11 +86,11 @@ const createStyles = (theme) => StyleSheet.create({
     elevation: 0,
   },
   cardContent: {
-    padding: 24,
-    gap: 6,
+    padding: 20,
+    gap: 10,
   },
   cardHeader: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   titleContainer: {
     marginBottom: 8,
@@ -98,39 +98,32 @@ const createStyles = (theme) => StyleSheet.create({
   arabicTitle: {
     textAlign: 'right',
     writingDirection: 'rtl',
-    fontWeight: '800',
-    color: theme.colors.primary,
-    marginBottom: 8,
-    lineHeight: 32,
+    fontWeight: '700',
+    color: theme.colors.onSurface,
+    marginBottom: 6,
+    lineHeight: 28,
   },
   russianTitle: {
     lineHeight: 28,
     fontWeight: '600',
-    color: theme.colors.onSurface,
+    color: theme.colors.onSurfaceVariant,
   },
   difficultyChip: {
     alignSelf: 'flex-start',
+    borderWidth: 0,
   },
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 6,
+    paddingTop: 6,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.primary + '10',
   },
   infoText: {
-    color: theme.colors.primary,
+    color: theme.colors.onSurfaceVariant,
     fontWeight: '600',
-  },
-  arrowButton: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: 16,
-    marginLeft: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.primary + '25',
-    shadowColor: 'transparent',
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    shadowOffset: { width: 0, height: 0 },
-    elevation: 0,
   },
   arrowIcon: {
     margin: 0,
@@ -141,10 +134,10 @@ const createStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
   },
   countBadge: {
-    backgroundColor: theme.dark ? 'rgba(59,130,246,0.12)' : theme.colors.primaryContainer,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 14,
+    backgroundColor: theme.colors.surfaceVariant,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
     shadowColor: 'transparent',
     shadowOpacity: 0,
     shadowRadius: 0,
@@ -152,7 +145,7 @@ const createStyles = (theme) => StyleSheet.create({
     elevation: 0,
   },
   ctaText: {
-    color: theme.colors.onSurface,
-    fontWeight: '600',
+    color: theme.colors.primary,
+    fontWeight: '700',
   },
 });
