@@ -1,0 +1,367 @@
+{
+  "textbooks": [
+    {
+      "title": "Байна ядайк - Том 1",
+      "description": "Базовый курс диалогов и лексики для начинающих",
+      "level": "A1",
+      "order_index": 1
+    },
+    {
+      "title": "Байна ядайк - Том 2",
+      "description": "Продолжаем укреплять основу",
+      "level": "A2",
+      "order_index": 2
+    },
+    {
+      "title": "Байна ядайк - Том 3",
+      "description": "Углубляемся в лексику и диалоги",
+      "level": "B1",
+      "order_index": 3
+    },
+    {
+      "title": "Байна ядайк - Том 4",
+      "description": "Закрепление и расширение контекста",
+      "level": "B2",
+      "order_index": 4
+    }
+  ],
+  "lessons": [
+    {
+      "textbookOrder": 1,
+      "number": 1,
+      "title": "الدرس الأول - التعارف",
+      "subtitle": "Том 1 — Урок 1 — Знакомство",
+      "difficulty": "مبتدئ",
+      "order_index": 1,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "السلام عليكم",
+          "transcription": "as-salāmu ʿalaykum",
+          "russian": "Мир вам (приветствие)",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "وعليكم السلام",
+          "transcription": "wa ʿalaykumu s-salām",
+          "russian": "И вам мир (ответ на приветствие)",
+          "speaker": "Б"
+        },
+        {
+          "id": 3,
+          "arabic": "ما اسمك؟",
+          "transcription": "mā ismuka?",
+          "russian": "Как тебя зовут?",
+          "speaker": "А"
+        },
+        {
+          "id": 4,
+          "arabic": "اسمي أحمد",
+          "transcription": "ismī Aḥmad",
+          "russian": "Меня зовут Ахмад",
+          "speaker": "Б"
+        },
+        {
+          "id": 5,
+          "arabic": "أهلاً وسهلاً",
+          "transcription": "ahlan wa sahlan",
+          "russian": "Добро пожаловать",
+          "speaker": "А"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 1,
+      "number": 2,
+      "title": "الدرس الثاني - في البيت",
+      "subtitle": "Том 1 — Урок 2 — Дома",
+      "difficulty": "مبتدئ",
+      "order_index": 2,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أين البيت؟",
+          "transcription": "ayna l-bayt?",
+          "russian": "Где дом?",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "هذا البيت",
+          "transcription": "hādhā l-bayt",
+          "russian": "Вот дом",
+          "speaker": "Б"
+        },
+        {
+          "id": 3,
+          "arabic": "البيت كبير",
+          "transcription": "al-baytu kabīr",
+          "russian": "Дом большой",
+          "speaker": "А"
+        },
+        {
+          "id": 4,
+          "arabic": "نعم، البيت جميل",
+          "transcription": "naʿam, al-baytu jamīl",
+          "russian": "Да, дом красивый",
+          "speaker": "Б"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 1,
+      "number": 3,
+      "title": "الدرس الثالث - في المدرسة",
+      "subtitle": "Том 1 — Урок 3 — В школе",
+      "difficulty": "مبتدئ",
+      "order_index": 3,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أين المدرسة؟",
+          "transcription": "ayna l-madrasa?",
+          "russian": "Где школа?",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "المدرسة هناك",
+          "transcription": "al-madrasatu hunāk",
+          "russian": "Школа там",
+          "speaker": "Б"
+        },
+        {
+          "id": 3,
+          "arabic": "من هذا؟",
+          "transcription": "man hādhā?",
+          "russian": "Кто это?",
+          "speaker": "А"
+        },
+        {
+          "id": 4,
+          "arabic": "هذا المعلم",
+          "transcription": "hādhā l-muʿallim",
+          "russian": "Это учитель",
+          "speaker": "Б"
+        },
+        {
+          "id": 5,
+          "arabic": "المعلم طيب",
+          "transcription": "al-muʿallimu ṭayyib",
+          "russian": "Учитель добрый",
+          "speaker": "А"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 2,
+      "number": 1,
+      "title": "الدرس الأول - في الجامعة",
+      "subtitle": "Том 2 — Урок 1 — В университете",
+      "difficulty": "متوسط",
+      "order_index": 1,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أين الجامعة؟",
+          "transcription": "ayna l-jāmiʿa?",
+          "russian": "Где университет?",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "الجامعة كبيرة",
+          "transcription": "al-jāmiʿatu kabīra",
+          "russian": "Университет большой",
+          "speaker": "Б"
+        },
+        {
+          "id": 3,
+          "arabic": "هل تحب الدراسة؟",
+          "transcription": "hal tuḥibbu d-dirāsa?",
+          "russian": "Ты любишь учёбу?",
+          "speaker": "А"
+        },
+        {
+          "id": 4,
+          "arabic": "نعم، أحبها كثيراً",
+          "transcription": "naʿam, uḥibbuhā kathīran",
+          "russian": "Да, очень люблю",
+          "speaker": "Б"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 2,
+      "number": 2,
+      "title": "الدرس الثاني - في المطعم",
+      "subtitle": "Том 2 — Урок 2 — В ресторане",
+      "difficulty": "متوسط",
+      "order_index": 2,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أريد طعاماً",
+          "transcription": "urīdu ṭaʿāman",
+          "russian": "Я хочу еду",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "ماذا تريد؟",
+          "transcription": "mādhā turīd?",
+          "russian": "Что ты хочешь?",
+          "speaker": "Б"
+        },
+        {
+          "id": 3,
+          "arabic": "أريد أرزاً ولحماً",
+          "transcription": "urīdu arzan wa laḥman",
+          "russian": "Я хочу рис и мясо",
+          "speaker": "А"
+        },
+        {
+          "id": 4,
+          "arabic": "هل تريد ماء؟",
+          "transcription": "hal turīdu māʾan?",
+          "russian": "Хочешь воды?",
+          "speaker": "Б"
+        },
+        {
+          "id": 5,
+          "arabic": "نعم، أريد ماء بارداً",
+          "transcription": "naʿam, urīdu māʾan bāridan",
+          "russian": "Да, я хочу холодную воду",
+          "speaker": "А"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 3,
+      "number": 1,
+      "title": "الدرس الأول - السفر",
+      "subtitle": "Том 3 — Урок 1 — Путешествие",
+      "difficulty": "متقدم",
+      "order_index": 1,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أين المطار؟",
+          "transcription": "ayna l-maṭār?",
+          "russian": "Где аэропорт?",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "المطار بعيد قليلاً",
+          "transcription": "al-maṭāru baʿīd qalīlan",
+          "russian": "Аэропорт немного далеко",
+          "speaker": "Б"
+        }
+      ]
+    },
+    {
+      "textbookOrder": 4,
+      "number": 1,
+      "title": "الدرس الأول - العمل",
+      "subtitle": "Том 4 — Урок 1 — Работа",
+      "difficulty": "متقدم",
+      "order_index": 1,
+      "dialogues": [
+        {
+          "id": 1,
+          "arabic": "أين تعمل؟",
+          "transcription": "ayna taʿmal?",
+          "russian": "Где ты работаешь?",
+          "speaker": "А"
+        },
+        {
+          "id": 2,
+          "arabic": "أعمل في شركة كبيرة",
+          "transcription": "aʿmalu fī sharika kabīra",
+          "russian": "Я работаю в большой компании",
+          "speaker": "Б"
+        }
+      ]
+    }
+  ],
+  "vocabulary": [
+    {
+      "key": "salam",
+      "arabic": "السلام عليكم",
+      "transcription": "as-salāmu ʿalaykum",
+      "translation_ru": "Мир вам",
+      "part_of_speech": "phrase",
+      "notes": "Базовое приветствие"
+    },
+    {
+      "key": "reply_salam",
+      "arabic": "وعليكم السلام",
+      "transcription": "wa ʿalaykumu s-salām",
+      "translation_ru": "И вам мир",
+      "part_of_speech": "phrase",
+      "notes": "Ответ на приветствие"
+    },
+    {
+      "key": "name",
+      "arabic": "اسم",
+      "transcription": "ism",
+      "translation_ru": "имя",
+      "part_of_speech": "noun"
+    },
+    {
+      "key": "house",
+      "arabic": "بيت",
+      "transcription": "bayt",
+      "translation_ru": "дом",
+      "part_of_speech": "noun"
+    },
+    {
+      "key": "market",
+      "arabic": "سوق",
+      "transcription": "sūq",
+      "translation_ru": "рынок",
+      "part_of_speech": "noun"
+    },
+    {
+      "key": "big",
+      "arabic": "كبير",
+      "transcription": "kabīr",
+      "translation_ru": "большой",
+      "part_of_speech": "adj"
+    },
+    {
+      "key": "beautiful",
+      "arabic": "جميل",
+      "transcription": "jamīl",
+      "translation_ru": "красивый",
+      "part_of_speech": "adj"
+    },
+    {
+      "key": "expensive",
+      "arabic": "غالي",
+      "transcription": "ghālī",
+      "translation_ru": "дорогой",
+      "part_of_speech": "adj"
+    },
+    {
+      "key": "riyal",
+      "arabic": "ريال",
+      "transcription": "riyāl",
+      "translation_ru": "риал",
+      "part_of_speech": "noun"
+    }
+  ],
+  "lessonVocabulary": [
+    { "lessonNumber": 1, "vocabKey": "salam", "order_index": 1 },
+    { "lessonNumber": 1, "vocabKey": "reply_salam", "order_index": 2 },
+    { "lessonNumber": 1, "vocabKey": "name", "order_index": 3 },
+    { "lessonNumber": 2, "vocabKey": "house", "order_index": 1 },
+    { "lessonNumber": 2, "vocabKey": "big", "order_index": 2 },
+    { "lessonNumber": 2, "vocabKey": "beautiful", "order_index": 3 },
+    { "lessonNumber": 3, "vocabKey": "market", "order_index": 1 },
+    { "lessonNumber": 3, "vocabKey": "riyal", "order_index": 2 },
+    { "lessonNumber": 3, "vocabKey": "expensive", "order_index": 3 }
+  ]
+}

@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
+import initialData from '../assets/seed/initialData.json';
 
-const DB_NAME = 'bayna_yadayk.db';
+const DB_NAME = 'bayna_yadayk_v2.db';
 
 export const PARTS_OF_SPEECH = {
   NOUN: 'noun',
@@ -207,100 +208,10 @@ export async function seedDbIfEmpty() {
     return false;
   }
 
-  const sampleTextbooks = [
-    {
-      title: 'Байна ядайк - Том 1',
-      description: 'Базовый курс диалогов и лексики для начинающих',
-      level: 'A1',
-      order_index: 1,
-    },
-    {
-      title: 'Байна ядайк - Том 2',
-      description: 'Продолжаем укреплять основу',
-      level: 'A2',
-      order_index: 2,
-    },
-    {
-      title: 'Байна ядайк - Том 3',
-      description: 'Углубляемся в лексику и диалоги',
-      level: 'B1',
-      order_index: 3,
-    },
-    {
-      title: 'Байна ядайк - Том 4',
-      description: 'Закрепление и расширение контекста',
-      level: 'B2',
-      order_index: 4,
-    },
-  ];
-
-  const baseLessons = [
-    {
-      number: 1,
-      title: 'الدرس الأول - التعارف',
-      subtitle: 'Урок 1 - Знакомство',
-      difficulty: 'مبتدئ',
-      order_index: 1,
-      dialogues: [
-        { id: 1, arabic: 'السلام عليكم', transcription: 'as-salāmu ʿalaykum', russian: 'Мир вам (приветствие)', speaker: 'А' },
-        { id: 2, arabic: 'وعليكم السلام', transcription: 'wa ʿalaykumu s-salām', russian: 'И вам мир (ответ на приветствие)', speaker: 'Б' },
-        { id: 3, arabic: 'ما اسمك؟', transcription: 'mā ismuka?', russian: 'Как тебя зовут?', speaker: 'А' },
-        { id: 4, arabic: 'اسمي أحمد', transcription: 'ismī Aḥmad', russian: 'Меня зовут Ахмад', speaker: 'Б' },
-        { id: 5, arabic: 'أهلاً وسهلاً', transcription: 'ahlan wa sahlan', russian: 'Добро пожаловать', speaker: 'А' },
-      ],
-    },
-    {
-      number: 2,
-      title: 'الدرس الثاني - في البيت',
-      subtitle: 'Урок 2 - Дома',
-      difficulty: 'مبتدئ',
-      order_index: 2,
-      dialogues: [
-        { id: 1, arabic: 'أين البيت؟', transcription: 'ayna l-bayt?', russian: 'Где дом?', speaker: 'А' },
-        { id: 2, arabic: 'هذا البيت', transcription: 'hādhā l-bayt', russian: 'Вот дом', speaker: 'Б' },
-        { id: 3, arabic: 'البيت كبير', transcription: 'al-baytu kabīr', russian: 'Дом большой', speaker: 'А' },
-        { id: 4, arabic: 'نعم، البيت جميل', transcription: 'naʿam, al-baytu jamīl', russian: 'Да, дом красивый', speaker: 'Б' },
-      ],
-    },
-    {
-      number: 3,
-      title: 'الدرس الثالث - في السوق',
-      subtitle: 'Урок 3 - На рынке',
-      difficulty: 'متوسط',
-      order_index: 3,
-      dialogues: [
-        { id: 1, arabic: 'أين السوق؟', transcription: 'ayna s-sūq?', russian: 'Где рынок?', speaker: 'А' },
-        { id: 2, arabic: 'السوق قريب من هنا', transcription: 'as-sūqu qarībun min hunā', russian: 'Рынок близко отсюда', speaker: 'Б' },
-        { id: 3, arabic: 'بكم هذا؟', transcription: 'bi-kam hādhā?', russian: 'Сколько это стоит?', speaker: 'А' },
-        { id: 4, arabic: 'بعشرة ريالات', transcription: 'bi-ʿasharati riyālāt', russian: 'Десять риалов', speaker: 'Б' },
-        { id: 5, arabic: 'غالي جداً', transcription: 'ghālin jiddan', russian: 'Очень дорого', speaker: 'А' },
-      ],
-    },
-  ];
-
-  const sampleVocabulary = [
-    { key: 'salam', arabic: 'السلام عليكم', transcription: 'as-salāmu ʿalaykum', translation_ru: 'Мир вам', part_of_speech: PARTS_OF_SPEECH.PHRASE, notes: 'Базовое приветствие' },
-    { key: 'reply_salam', arabic: 'وعليكم السلام', transcription: 'wa ʿalaykumu s-salām', translation_ru: 'И вам мир', part_of_speech: PARTS_OF_SPEECH.PHRASE, notes: 'Ответ на приветствие' },
-    { key: 'name', arabic: 'اسم', transcription: 'ism', translation_ru: 'имя', part_of_speech: PARTS_OF_SPEECH.NOUN },
-    { key: 'house', arabic: 'بيت', transcription: 'bayt', translation_ru: 'дом', part_of_speech: PARTS_OF_SPEECH.NOUN },
-    { key: 'market', arabic: 'سوق', transcription: 'sūq', translation_ru: 'рынок', part_of_speech: PARTS_OF_SPEECH.NOUN },
-    { key: 'big', arabic: 'كبير', transcription: 'kabīr', translation_ru: 'большой', part_of_speech: PARTS_OF_SPEECH.ADJ },
-    { key: 'beautiful', arabic: 'جميل', transcription: 'jamīl', translation_ru: 'красивый', part_of_speech: PARTS_OF_SPEECH.ADJ },
-    { key: 'expensive', arabic: 'غالي', transcription: 'ghālī', translation_ru: 'дорогой', part_of_speech: PARTS_OF_SPEECH.ADJ },
-    { key: 'riyal', arabic: 'ريال', transcription: 'riyāl', translation_ru: 'риал', part_of_speech: PARTS_OF_SPEECH.NOUN },
-  ];
-
-  const sampleLessonVocabulary = [
-    { lessonNumber: 1, vocabKey: 'salam', order_index: 1 },
-    { lessonNumber: 1, vocabKey: 'reply_salam', order_index: 2 },
-    { lessonNumber: 1, vocabKey: 'name', order_index: 3 },
-    { lessonNumber: 2, vocabKey: 'house', order_index: 1 },
-    { lessonNumber: 2, vocabKey: 'big', order_index: 2 },
-    { lessonNumber: 2, vocabKey: 'beautiful', order_index: 3 },
-    { lessonNumber: 3, vocabKey: 'market', order_index: 1 },
-    { lessonNumber: 3, vocabKey: 'riyal', order_index: 2 },
-    { lessonNumber: 3, vocabKey: 'expensive', order_index: 3 },
-  ];
+  const sampleTextbooks = initialData.textbooks || [];
+  const baseLessons = initialData.lessons || [];
+  const sampleVocabulary = initialData.vocabulary || [];
+  const sampleLessonVocabulary = initialData.lessonVocabulary || [];
 
   const vocabularyIdByKey = {};
 
@@ -333,7 +244,13 @@ export async function seedDbIfEmpty() {
 
     const lessonIdByNumber = {};
 
-    for (const lesson of baseLessons) {
+    const lessonsForTextbook = baseLessons.filter(
+      (lesson) =>
+        !lesson.textbookOrder ||
+        lesson.textbookOrder === textbook.order_index
+    );
+
+    for (const lesson of lessonsForTextbook) {
       const content = JSON.stringify({
         dialogues: lesson.dialogues,
         difficulty: lesson.difficulty,
