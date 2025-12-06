@@ -8,10 +8,11 @@ const { width } = Dimensions.get('window');
 export function StatCard({ title, value, subtitle, icon, color }) {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const accentStyle = { borderColor: color + '33' };
   
   return (
     <Card 
-      style={[styles.statCard, { borderLeftColor: color }]} 
+      style={[styles.statCard, accentStyle]} 
       elevation={3}
     >
       <PaperCard.Content style={styles.statContent}>
@@ -37,16 +38,21 @@ const createStyles = (theme) => StyleSheet.create({
     flex: 1,
     minWidth: (width - 48) / 2,
     borderRadius: 20,
-    backgroundColor: theme.colors.surface,
-    borderLeftWidth: 6,
+    backgroundColor: theme.dark ? '#0B172A' : '#FFFFFF',
+    borderWidth: 1,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
   },
   statContent: {
     padding: 16,
+    gap: 4,
   },
   statHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   statIcon: {
     fontSize: 24,
@@ -64,4 +70,3 @@ const createStyles = (theme) => StyleSheet.create({
     color: theme.colors.onSurfaceVariant,
   },
 });
-

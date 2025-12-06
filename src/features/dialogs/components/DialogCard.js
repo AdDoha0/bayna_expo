@@ -8,6 +8,9 @@ export function DialogCard({ dialog, onPress }) {
   const theme = useTheme();
   const styles = createStyles(theme);
   const dialoguesCount = Array.isArray(dialog.dialogues) ? dialog.dialogues.length : (dialog.dialoguesCount || 0);
+  const gradientColors = theme.dark
+    ? ['rgba(14,165,233,0.12)', 'rgba(15,23,42,0.6)']
+    : ['#E0F2FE', '#FFFFFF'];
   
   function getDifficultyColor(difficulty) {
     return colors.difficulty[difficulty] || theme.colors.primary;
@@ -26,9 +29,25 @@ export function DialogCard({ dialog, onPress }) {
     <Card
       style={styles.dialogCard}
       gradient={true}
+      gradientColors={gradientColors}
       onPress={() => onPress(dialog)}
     >
       <PaperCard.Content style={styles.cardContent}>
+        <View style={styles.metaRow}>
+          <Chip
+            backgroundColor={getDifficultyColor(dialog.difficulty) + '20'}
+            textColor={getDifficultyColor(dialog.difficulty)}
+            style={styles.difficultyChip}
+          >
+            {getDifficultyText(dialog.difficulty || '—')}
+          </Chip>
+          <Surface style={styles.countBadge} elevation={0}>
+            <Text variant="labelLarge" style={styles.infoText}>
+              {dialoguesCount} реплик
+            </Text>
+          </Surface>
+        </View>
+
         <View style={styles.cardHeader}>
           <View style={styles.titleContainer}>
             <Text variant="headlineSmall" style={styles.arabicTitle}>
@@ -38,27 +57,16 @@ export function DialogCard({ dialog, onPress }) {
               {dialog.subtitle}
             </Text>
           </View>
-          <Chip
-            backgroundColor={getDifficultyColor(dialog.difficulty) + '20'}
-            textColor={getDifficultyColor(dialog.difficulty)}
-            style={styles.difficultyChip}
-          >
-            {getDifficultyText(dialog.difficulty || '—')}
-          </Chip>
         </View>
         
         <View style={styles.cardFooter}>
-          <View style={styles.dialogInfo}>
-            <Surface style={styles.infoChip} elevation={1}>
-              <Text variant="labelLarge" style={styles.infoText}>
-                📚 {dialoguesCount} реплик
-              </Text>
-            </Surface>
-          </View>
-          <Surface style={styles.arrowButton} elevation={2}>
+          <Text variant="bodyLarge" style={styles.ctaText}>
+            Открыть диалог
+          </Text>
+          <Surface style={styles.arrowButton} elevation={3}>
             <IconButton
-              icon="arrow-left"
-              size={24}
+              icon="arrow-right"
+              size={26}
               iconColor={theme.colors.primary}
               style={styles.arrowIcon}
             />
@@ -72,15 +80,18 @@ export function DialogCard({ dialog, onPress }) {
 const createStyles = (theme) => StyleSheet.create({
   dialogCard: {
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '10',
   },
   cardContent: {
     padding: 24,
+    gap: 6,
   },
   cardHeader: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   titleContainer: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   arabicTitle: {
     textAlign: 'right',
@@ -103,26 +114,33 @@ const createStyles = (theme) => StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  dialogInfo: {
-    flex: 1,
-  },
-  infoChip: {
-    backgroundColor: theme.colors.primaryContainer,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
-  },
   infoText: {
     color: theme.colors.primary,
     fontWeight: '600',
   },
   arrowButton: {
-    backgroundColor: theme.colors.primaryContainer,
-    borderRadius: 20,
+    backgroundColor: theme.colors.surface,
+    borderRadius: 16,
     marginLeft: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '25',
   },
   arrowIcon: {
     margin: 0,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  countBadge: {
+    backgroundColor: theme.dark ? 'rgba(59,130,246,0.12)' : theme.colors.primaryContainer,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 14,
+  },
+  ctaText: {
+    color: theme.colors.onSurface,
+    fontWeight: '600',
   },
 });

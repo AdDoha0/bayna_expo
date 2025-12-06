@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Animated, ScrollView, Pressable } from 'react-native';
 import { Text, Surface, useTheme } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Screen, AnimatedHeader } from '../../../shared/components';
 import { LoadingScreen } from '../../../shared/components/feedback/LoadingScreen';
 import { DialogsList } from '../components';
@@ -14,6 +15,7 @@ export function DialogsListScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   // Используем AnimatedHeader компонент
   const { headerComponent, contentPaddingTop } = AnimatedHeader({
@@ -104,37 +106,50 @@ export function DialogsListScreen({ navigation }) {
     if (!textbooks.length) return null;
 
     return (
-      <Surface style={styles.textbookSwitcher} elevation={1}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.textbookSwitcherContent}
+      <Surface style={styles.textbookSwitcher} elevation={0}>
+        <LinearGradient
+          colors={theme.dark ? ['#0F172A', '#0B1220'] : ['#E0F2FE', '#F8FAFC']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.textbookGradient}
         >
-          {textbooks.map((book) => {
-            const isActive = book.id === selectedTextbookId;
-            return (
-              <Pressable
-                key={book.id}
-                onPress={() => {
-                  if (book.id !== selectedTextbookId) {
-                    loadLessonsByTextbook(book.id, true);
-                  }
-                }}
-                style={[
-                  styles.textbookButton,
-                  isActive && { backgroundColor: theme.colors.primary + '15', borderColor: theme.colors.primary },
-                ]}
-              >
-                <Text variant="titleSmall" style={[styles.textbookTitle, isActive && { color: theme.colors.primary }]}>
-                  {book.title}
-                </Text>
-                <Text variant="labelMedium" style={styles.textbookSubtitle}>
-                  {book.level || '—'}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
+          <View style={styles.switcherHeader}>
+            <Text variant="titleMedium" style={styles.switcherTitle}>Выберите учебник</Text>
+            <Text variant="bodySmall" style={styles.switcherSubtitle}>
+              Переключайте уровень и открывайте новые диалоги
+            </Text>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.textbookSwitcherContent}
+          >
+            {textbooks.map((book) => {
+              const isActive = book.id === selectedTextbookId;
+              return (
+                <Pressable
+                  key={book.id}
+                  onPress={() => {
+                    if (book.id !== selectedTextbookId) {
+                      loadLessonsByTextbook(book.id, true);
+                    }
+                  }}
+                  style={[
+                    styles.textbookButton,
+                    isActive && { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary, shadowOpacity: 0.2 },
+                  ]}
+                >
+                  <Text variant="titleSmall" style={[styles.textbookTitle, isActive && { color: theme.colors.primary }]}>
+                    {book.title}
+                  </Text>
+                  <Text variant="labelMedium" style={styles.textbookSubtitle}>
+                    {book.level || '—'}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </LinearGradient>
       </Surface>
     );
   }
@@ -211,7 +226,7 @@ export function DialogsListScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   decorativeElement: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -222,13 +237,13 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#E0E7FF',
+    backgroundColor: theme.colors.primaryContainer,
     opacity: 0.8,
   },
   decorativeLine: {
     width: 40,
     height: 2,
-    backgroundColor: '#E0E7FF',
+    backgroundColor: theme.colors.primaryContainer,
     opacity: 0.6,
   },
   emptyState: {
@@ -252,28 +267,42 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginHorizontal: 0,
     marginBottom: 8,
-    paddingVertical: 8,
-    backgroundColor: '#fff',
     borderRadius: 20,
+    overflow: 'hidden',
+  },
+  textbookGradient: {
+    paddingVertical: 16,
+  },
+  switcherHeader: {
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  switcherTitle: {
+    fontWeight: '700',
+    color: theme.colors.onSurface,
+  },
+  switcherSubtitle: {
+    color: theme.colors.onSurfaceVariant,
+    marginTop: 4,
   },
   textbookSwitcherContent: {
     paddingHorizontal: 12,
     gap: 8,
   },
   textbookButton: {
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(99,102,241,0.2)',
-    paddingVertical: 10,
+    borderColor: theme.colors.primary + '20',
+    paddingVertical: 12,
     paddingHorizontal: 14,
-    minWidth: 160,
-    marginRight: 8,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 1,
+    minWidth: 170,
+    marginRight: 10,
+    backgroundColor: theme.dark ? 'rgba(15,23,42,0.8)' : 'rgba(255,255,255,0.9)',
+    shadowColor: '#0F172A',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 2,
   },
   textbookTitle: {
     fontWeight: '700',

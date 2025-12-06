@@ -59,11 +59,11 @@ export function DialogDetailScreen({ route }) {
 
   // Динамические цвета градиента в зависимости от темы
   const headerGradientColors = theme.dark
-    ? [theme.colors.primary, theme.colors.secondary, theme.colors.tertiary]
-    : ['#4338CA', '#6366F1', '#8B5CF6'];
+    ? ['#0B1220', '#0F172A', '#12243A']
+    : ['#0EA5E9', '#2563EB', '#22D3EE'];
   const footerGradientColors = theme.dark
-    ? [theme.colors.surfaceVariant, theme.colors.surface]
-    : ['#EEF2FF', '#F8FAFC'];
+    ? ['#0B172A', '#0D1224']
+    : ['#E0F2FE', '#F8FAFC'];
 
   if (loading) {
     return <LoadingScreen message="Загрузка диалога..." />;
@@ -125,12 +125,12 @@ export function DialogDetailScreen({ route }) {
           
           <Surface style={styles.controlsContainer} elevation={3}>
             <Button
-              mode="contained"
+              mode="contained-tonal"
               icon={showTranscription ? "eye-off" : "eye"}
               onPress={() => setShowTranscription(!showTranscription)}
               style={styles.transcriptionButton}
-              buttonColor={theme.dark ? theme.colors.surface : "rgba(255,255,255,0.9)"}
-              textColor={theme.colors.primary}
+              buttonColor={theme.dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.2)'}
+              textColor={theme.colors.onSurface}
               compact={false}
             >
               {showTranscription ? 'Скрыть' : 'Показать'} транскрипцию
@@ -153,7 +153,9 @@ export function DialogDetailScreen({ route }) {
         })}
       >
         <View style={[styles.dialogsContainer, Platform.OS === 'web' && styles.webDialogsContainer]}>
-          {(dialog.dialogues || []).map((item, index) => renderDialogueItem(item, index))}
+          <Surface style={styles.dialogsSurface} elevation={2}>
+            {(dialog.dialogues || []).map((item, index) => renderDialogueItem(item, index))}
+          </Surface>
         </View>
         
         <Surface style={styles.footer} elevation={0}>
@@ -218,10 +220,12 @@ const createStyles = (theme) => StyleSheet.create({
     marginBottom: 20,
   },
   controlsContainer: {
-    backgroundColor: theme.dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)',
+    backgroundColor: theme.dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.18)',
     borderRadius: 20,
-    padding: 4,
+    padding: 6,
     alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '20',
   },
   transcriptionButton: {
     borderRadius: 16,
@@ -239,16 +243,29 @@ const createStyles = (theme) => StyleSheet.create({
     flexGrow: 1,
     paddingTop: 24,
     paddingBottom: 40,
+    paddingHorizontal: 8,
   },
   webScrollContent: {
     minHeight: '100%',
     paddingBottom: 80,
   },
   dialogsContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
   },
   webDialogsContainer: {
     minHeight: 'auto',
+  },
+  dialogsSurface: {
+    paddingVertical: 6,
+    borderRadius: 22,
+    backgroundColor: theme.dark ? '#0B1220' : '#FFFFFF',
+    shadowColor: theme.colors.shadow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 20px 60px rgba(15, 23, 42, 0.15)',
+    }),
   },
   footer: {
     marginTop: 32,

@@ -18,6 +18,7 @@ export function VocabularySearchBar({
         value={searchQuery}
         style={styles.searchBar}
         iconColor={theme.colors.primary}
+        inputStyle={styles.searchInput}
       />
     </Surface>
   );
@@ -25,14 +26,18 @@ export function VocabularySearchBar({
 
 const createStyles = (theme) => StyleSheet.create({
   searchContainer: {
-    backgroundColor: theme.colors.surface,
+    backgroundColor: 'transparent',
     borderRadius: 20,
     marginBottom: 16,
-    elevation: 2,
   },
   searchBar: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.dark ? '#0B172A' : '#FFFFFF',
     elevation: 0,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '14',
   },
+  searchInput: {
+    fontWeight: '600',
+  }
 });
-

@@ -9,13 +9,16 @@ export function WordCard({ word }) {
   const theme = useTheme();
   const styles = createStyles(theme);
   const posLabel = PARTS_OF_SPEECH_LABELS[word.part_of_speech] || word.part_of_speech || '—';
+  const gradientColors = theme.dark
+    ? ['rgba(14,165,233,0.08)', '#0B172A']
+    : ['#E0F2FE', '#FFFFFF'];
   
   function getCategoryColor(partOfSpeech) {
     return colors.partOfSpeech?.[partOfSpeech] || theme.colors.primary;
   }
 
   return (
-    <Card style={styles.wordCard} elevation={4}>
+    <Card style={styles.wordCard} elevation={4} gradient gradientColors={gradientColors}>
       <PaperCard.Content style={styles.wordContent}>
         <View style={styles.wordHeader}>
           <Text variant="headlineSmall" style={styles.arabicWord}>
@@ -46,10 +49,12 @@ const createStyles = (theme) => StyleSheet.create({
     marginBottom: 16,
     borderRadius: 20,
     backgroundColor: theme.colors.surface,
-    shadowColor: theme.colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '12',
+    shadowColor: theme.colors.shadow,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
   },
   wordContent: {
     padding: 20,
@@ -75,7 +80,7 @@ const createStyles = (theme) => StyleSheet.create({
     fontWeight: '600',
   },
   transcription: {
-    color: theme.colors.secondary,
+    color: theme.colors.onSurfaceVariant,
     fontStyle: 'italic',
     marginBottom: 8,
     textAlign: 'center',

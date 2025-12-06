@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, Surface, useTheme } from 'react-native-paper';
 import { Screen, AnimatedHeader } from '../../../shared/components';
 import { SettingItem, ActionItem, SettingsSection } from '../components';
 import { useSettings } from '../model/SettingsContext';
 
 export function SettingsScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
+  const theme = useTheme();
+  const styles = createStyles(theme);
   
   // Используем глобальный стейт настроек из Context
   const { settings, toggle, appVersion, actions } = useSettings();
@@ -34,6 +36,12 @@ export function SettingsScreen() {
         scrollEventThrottle={16}
       >
         <Animated.View style={{ paddingTop: contentPaddingTop }}>
+        <Surface style={styles.heroCard} elevation={3}>
+          <Text variant="titleLarge" style={styles.heroTitle}>Настройте атмосферу</Text>
+          <Text variant="bodyMedium" style={styles.heroSubtitle}>
+            Включите напоминания, выберите тёмную тему и сделайте обучение комфортнее.
+          </Text>
+        </Surface>
         {/* Основные настройки */}
         <SettingsSection title="🔔 Уведомления и звуки">
           <SettingItem
@@ -143,7 +151,7 @@ export function SettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
@@ -151,6 +159,23 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 0, // Теперь управляется анимацией
     paddingBottom: 40,
+    gap: 12,
+  },
+  heroCard: {
+    backgroundColor: theme.dark ? '#0B172A' : '#FFFFFF',
+    borderRadius: 18,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '12',
+    marginBottom: 8,
+  },
+  heroTitle: {
+    fontWeight: '700',
+    color: theme.colors.onSurface,
+    marginBottom: 6,
+  },
+  heroSubtitle: {
+    color: theme.colors.onSurfaceVariant,
   },
   footer: {
     alignItems: 'center',
@@ -159,13 +184,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontWeight: '700',
-    color: '#4338CA',
+    color: theme.colors.primary,
     marginBottom: 4,
     textAlign: 'center',
   },
   footerSubtext: {
-    color: '#6B7280',
+    color: theme.colors.onSurfaceVariant,
     textAlign: 'center',
   },
 });
-

@@ -73,39 +73,41 @@ function MainTabNavigator({ theme }) {
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.dark ? '#94A3B8' : '#94A3B8',
+        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
         tabBarStyle: {
-          backgroundColor: theme.colors.surface,
+          backgroundColor: theme.dark ? 'rgba(17,24,39,0.9)' : 'rgba(255,255,255,0.9)',
           borderTopWidth: 0,
-          elevation: 20,
-          shadowOpacity: 0.1,
-          shadowRadius: 20,
-          shadowOffset: { width: 0, height: -5 },
-          height: Platform.OS === 'ios' ? 85 : 70,
-          paddingBottom: Platform.OS === 'ios' ? 25 : 10,
-          paddingTop: 10,
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
+          elevation: 24,
+          shadowOpacity: 0.15,
+          shadowRadius: 18,
+          shadowOffset: { width: 0, height: -8 },
+          height: Platform.OS === 'ios' ? 82 : 72,
+          paddingBottom: Platform.OS === 'ios' ? 18 : 12,
+          paddingTop: 12,
+          borderRadius: 26,
+          marginHorizontal: 16,
+          marginBottom: Platform.OS === 'ios' ? 12 : 10,
           position: 'absolute',
-          marginHorizontal: 0,
           ...(Platform.OS === 'web' && {
             position: 'relative',
-            height: 70,
-            paddingBottom: 10,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
+            marginHorizontal: 0,
+            marginBottom: 0,
+            height: 72,
+            borderRadius: 0,
           }),
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: '700',
+          letterSpacing: 0.2,
           marginTop: 2,
         },
         tabBarIconStyle: {
           marginTop: 2,
         },
         tabBarItemStyle: {
-          paddingVertical: 4,
+          paddingVertical: 6,
+          borderRadius: 18,
         },
       })}
     >
@@ -181,8 +183,8 @@ function ThemedApp() {
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <StatusBar 
-          style={settings.darkTheme ? 'light' : 'light'} 
-          backgroundColor={settings.darkTheme ? '#0F172A' : '#4338CA'} 
+          style={settings.darkTheme ? 'light' : 'dark'} 
+          backgroundColor={settings.darkTheme ? '#050915' : '#0EA5E9'} 
         />
         <View style={{ 
           flex: 1, 

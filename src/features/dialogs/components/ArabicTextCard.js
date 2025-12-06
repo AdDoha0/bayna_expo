@@ -16,18 +16,22 @@ export function ArabicTextCard({
   const speakerName = speaker === 'А' ? 'هشام' : 'بلال';
   const speakerNameRussian = speaker === 'А' ? 'Хишам' : 'Биляль';
   const isFirstSpeaker = speaker === 'А';
+  const toneColor = isFirstSpeaker ? theme.colors.primary : theme.colors.secondary;
 
   return (
-    <Surface style={[styles.container, style]} elevation={2}>
+    <Surface style={[styles.container, style]} elevation={3}>
       <View style={styles.content}>
-        {/* Заголовок с именем говорящего */}
-        <View style={styles.speakerHeader}>
-          <Text variant="titleMedium" style={styles.speakerNameArabic}>
-            {speakerName}:
+        <View style={styles.headerRow}>
+          <Surface style={[styles.speakerBadge, { borderColor: toneColor, backgroundColor: toneColor + '20' }]} elevation={0}>
+            <Text variant="titleMedium" style={[styles.speakerNameArabic, { color: toneColor }]}>
+              {speakerName}
+            </Text>
+          </Surface>
+          <Text variant="bodyLarge" style={[styles.speakerNameRussian, { color: toneColor }]}>
+            {speakerNameRussian}
           </Text>
         </View>
         
-        {/* Арабский текст */}
         <View style={styles.arabicContainer}>
           <Text 
             variant="headlineLarge" 
@@ -40,24 +44,13 @@ export function ArabicTextCard({
           </Text>
         </View>
         
-        {/* Имя говорящего на русском */}
-        <View style={styles.russianNameContainer}>
-          <Text variant="bodyMedium" style={styles.speakerNameRussian}>
-            {speakerNameRussian}:
-          </Text>
-        </View>
+        <Text variant="titleLarge" style={styles.russianText}>
+          {russian}
+        </Text>
         
-        {/* Русский перевод */}
-        <View style={styles.russianContainer}>
-          <Text variant="titleLarge" style={styles.russianText}>
-            {russian}
-          </Text>
-        </View>
-        
-        {/* Транскрипция (если включена) */}
         {showTranscription && (
-          <View style={styles.transcriptionContainer}>
-            <Text variant="bodyMedium" style={styles.transcriptionText}>
+          <View style={[styles.transcriptionContainer, { borderLeftColor: toneColor, backgroundColor: toneColor + '12' }]}>
+            <Text variant="bodyMedium" style={[styles.transcriptionText, { color: toneColor }]}>
               {transcription}
             </Text>
           </View>
@@ -69,46 +62,28 @@ export function ArabicTextCard({
 
 const createStyles = (theme) => StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.surfaceVariant,
-    borderRadius: 12,
-    marginVertical: 8,
+    backgroundColor: theme.dark ? '#0F172A' : '#FFFFFF',
+    borderRadius: 16,
+    marginVertical: 10,
     marginHorizontal: 16,
     shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
     ...(Platform.OS === 'web' && {
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+      boxShadow: '0 12px 32px rgba(15, 23, 42, 0.12)',
     }),
   },
   content: {
-    padding: 20,
-  },
-  speakerHeader: {
-    marginBottom: 12,
-  },
-  speakerNameArabic: {
-    textAlign: 'right',
-    writingDirection: 'rtl',
-    fontWeight: '600',
-    fontSize: 16,
-    color: theme.colors.onSurface,
-    ...(Platform.OS === 'web' && {
-      direction: 'rtl',
-      unicodeBidi: 'bidi-override',
-    }),
+    padding: 22,
+    gap: 12,
   },
   arabicContainer: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: 8,
+    backgroundColor: theme.dark ? '#0B1220' : theme.colors.surfaceVariant,
+    borderRadius: 12,
     padding: 20,
-    marginBottom: 16,
-    shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
     ...(Platform.OS === 'web' && {
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
     }),
   },
   arabicText: {
@@ -126,26 +101,6 @@ const createStyles = (theme) => StyleSheet.create({
     wordBreak: 'keep-all',
     overflowWrap: 'normal',
   },
-  russianNameContainer: {
-    marginBottom: 8,
-  },
-  speakerNameRussian: {
-    fontWeight: '600',
-    fontSize: 14,
-    color: theme.colors.onSurfaceVariant,
-  },
-  russianContainer: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: 8,
-    padding: 16,
-    shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    ...(Platform.OS === 'web' && {
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-    }),
-  },
   russianText: {
     textAlign: 'left',
     color: theme.colors.onSurface,
@@ -154,18 +109,39 @@ const createStyles = (theme) => StyleSheet.create({
     fontSize: 18,
   },
   transcriptionContainer: {
-    backgroundColor: theme.dark ? 'rgba(245, 158, 11, 0.2)' : '#FFFBF0',
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 12,
-    marginTop: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: '#F59E0B',
+    marginTop: 4,
+    borderLeftWidth: 4,
   },
   transcriptionText: {
     textAlign: 'left',
     fontStyle: 'italic',
-    color: theme.dark ? '#FCD34D' : '#92400E',
     lineHeight: 20,
-    fontSize: 14,
+    fontSize: 15,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  speakerBadge: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 14,
+    borderWidth: 1,
+  },
+  speakerNameArabic: {
+    textAlign: 'right',
+    writingDirection: 'rtl',
+    fontWeight: '700',
+    fontSize: 16,
+    ...(Platform.OS === 'web' && {
+      direction: 'rtl',
+      unicodeBidi: 'bidi-override',
+    }),
+  },
+  speakerNameRussian: {
+    fontWeight: '700',
   },
 }); 

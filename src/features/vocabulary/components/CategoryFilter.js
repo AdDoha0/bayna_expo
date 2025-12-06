@@ -48,10 +48,12 @@ export function CategoryFilter({
 
 const createStyles = (theme) => StyleSheet.create({
   filtersContainer: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: 20,
-    marginBottom: 20,
+    backgroundColor: theme.dark ? '#0B1220' : '#FFFFFF',
+    borderRadius: 18,
+    marginBottom: 16,
     paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.primary + '12',
   },
   filtersContent: {
     paddingHorizontal: 16,

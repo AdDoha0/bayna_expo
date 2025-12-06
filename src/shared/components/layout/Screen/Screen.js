@@ -1,20 +1,29 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { getPlatformStyles, isWeb } from '../../../utils';
+import { LinearGradient } from 'expo-linear-gradient';
+import { isWeb } from '../../../utils';
 
 export function Screen({ children, style, paddingBottom = true }) {
   const theme = useTheme();
   const styles = createStyles(theme);
   
   return (
-    <View style={[
-      styles.container,
-      paddingBottom && styles.withPadding,
-      isWeb() && styles.webContainer,
-      style
-    ]}>
-      {children}
+    <View style={[styles.container, style]}>
+      <LinearGradient
+        colors={theme.dark ? ['#050915', '#0B172A'] : ['#F6F7FB', '#E0F2FE']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
+      <View style={[
+        styles.content,
+        paddingBottom && styles.withPadding,
+        isWeb() && styles.webContainer,
+      ]}>
+        {children}
+      </View>
     </View>
   );
 }
@@ -23,6 +32,9 @@ const createStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
+  },
+  content: {
+    flex: 1,
   },
   withPadding: {
     paddingBottom: 70, // Отступ для навигационной панели
@@ -33,4 +45,3 @@ const createStyles = (theme) => StyleSheet.create({
     paddingBottom: 0,
   },
 });
-
