@@ -93,17 +93,17 @@ export function AnimatedHeader({
               <Text variant="headlineLarge" style={styles.headerTitle}>
                 {title}
               </Text>
-              <Surface style={[styles.accentBadge, { backgroundColor: accentBackdrop }]} elevation={0}>
+              {/* <Surface style={[styles.accentBadge, { backgroundColor: accentBackdrop }]} elevation={0}>
                 <Text variant="labelLarge" style={styles.accentBadgeText}>
                   Новый вид
                 </Text>
-              </Surface>
+              </Surface> */}
             </View>
-            <Surface style={[styles.subtitleCard, { backgroundColor: accentPillColor }]} elevation={0}>
+            {/* <Surface style={[styles.subtitleCard, { backgroundColor: accentPillColor }]} elevation={0}>
               <Text variant="titleMedium" style={styles.headerSubtitle}>
                 {subtitle}
               </Text>
-            </Surface>
+            </Surface> */}
             {decorativeElement}
           </Surface>
         </LinearGradient>

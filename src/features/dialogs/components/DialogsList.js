@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   headerContentContainer: {
-    paddingHorizontal: 16,
     paddingBottom: 8,
   },
   webFlatList: {
